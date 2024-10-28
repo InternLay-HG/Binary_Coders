@@ -1,6 +1,8 @@
 ## Installation
 
-Open two terminal windows:
+Clone the repo and open my branch.
+
+In vscode open two terminals:
 
 In the first terminal, navigate to the server directory and start the server:
 
@@ -66,5 +68,3 @@ Then go to `http://localhost:3000`
 To log out, manually clear cookies in the browser.
 
 When logging in, use your IIIT Ranchi email.
-
-abc
