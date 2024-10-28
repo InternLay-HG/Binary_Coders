@@ -2,7 +2,7 @@
 
 Clone the repo and open my branch.
 
-In vscode open two terminals:
+In vscode, open two terminals:
 
 In the first terminal, navigate to the server directory and start the server:
 
