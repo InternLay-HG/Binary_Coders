@@ -6,7 +6,7 @@ In the first terminal, navigate to the server directory and start the server:
 
     cd server
     npm i
-    
+
 Then create a `.env` file with the following:
 
     GOOGLE_CLIENT_ID=
@@ -66,3 +66,5 @@ Then go to `http://localhost:3000`
 To log out, manually clear cookies in the browser.
 
 When logging in, use your IIIT Ranchi email.
+
+abc
