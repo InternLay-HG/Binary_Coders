@@ -6,6 +6,17 @@ In the first terminal, navigate to the server directory and start the server:
 
     cd server
     npm i
+    
+Then create a `.env` file with the following:
+
+    GOOGLE_CLIENT_ID=
+    GOOGLE_CLIENT_SECRET=
+    JWT_SECRET=
+    FRONTEND_URL=
+    MONGO_URI=
+
+Then start the server:
+
     npm start
 
 In the second terminal, navigate to the client directory and start the client:
