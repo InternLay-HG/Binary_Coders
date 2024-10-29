@@ -68,3 +68,5 @@ Then go to `http://localhost:3000`
 To log out, manually clear cookies in the browser.
 
 When logging in, use your IIIT Ranchi email.
+
+[Altas console](https://cloud.mongodb.com/v2/6718bf76b1b9ad76cf392188#/metrics/replicaSet/6718c08ff1806c283fc6c284/explorer/Sports_management/users/find)
