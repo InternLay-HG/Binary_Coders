@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import { OAuth2Client } from 'google-auth-library'
 import jwt from 'jsonwebtoken'
-import { users } from '../mongo.js'
+import { users } from '../utils/mongo.js'
 
 const router = express.Router()
 const client = new OAuth2Client(
@@ -88,5 +88,4 @@ function isValidEmailDomain(email) {
 	return email.split('@')[1].split('.')[0] === 'iiitranchi'
 }
 
-export default router
-export { authenticateJWT }
+export { authenticateJWT, router as default }

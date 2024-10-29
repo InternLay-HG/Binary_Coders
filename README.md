@@ -40,8 +40,8 @@ Then go to `http://localhost:3000`
     │   └── src/
     |      |
     │      ├── pages/
-    │      ├── App.jsx
-    │      └── index.jsx
+    |      |
+    │      └── App.jsx
     │
     │
     └── server/
@@ -49,9 +49,9 @@ Then go to `http://localhost:3000`
         ├── index.js
         |
         ├── routes/
-        |    |
-        │    ├── auth.js
-        |    └── ...
+        |   |
+        │   ├── auth.js
+        |   └── ...
         |
         └── utils/
             |

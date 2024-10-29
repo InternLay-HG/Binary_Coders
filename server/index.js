@@ -1,9 +1,9 @@
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
-import { users } from './mongo.js'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
 import 'dotenv/config'
+import { users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
