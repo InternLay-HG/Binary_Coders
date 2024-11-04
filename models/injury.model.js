@@ -1,9 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 const InjuriesSchema = new Schema({
-    name:{
+    type:{
     type:String,
     required:true,
-    } ,
+    },
+    description:{
+        type:String,
+    },
     start_date:{
      type:Date,
      required:true,
