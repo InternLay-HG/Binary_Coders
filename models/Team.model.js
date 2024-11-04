@@ -18,6 +18,10 @@ const teamSchema = new Schema({
       type:String,
       required:true
    },
+   captain:{
+      type:Schema.Types.ObjectId,
+      ref:'Athlete'
+   },
 //    coach:{
 //     type:Schema.Types.ObjectId,
 //     ref:'Coach'

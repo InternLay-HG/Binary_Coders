@@ -20,7 +20,6 @@ class ApiResponse{
 
     }
 }
-export {ApiResponse}
 
 
 export { asyncHandler,ApiResponse }

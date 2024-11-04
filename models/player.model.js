@@ -4,44 +4,39 @@ const athleteSchema = new Schema({
     type:String,
     required:true,
     trim:true,
-   } ,
-   email: {
+    } ,
+    email: {
     type:String,
     required:true,
     trim:true,
     unique:true,
     lowercase:true,
-   },
-   Age:{
+    },
+    Age:{
     type:Number,
-    required:true,
-   },
-   gender:{
+    },
+    gender:{
     type:String,
-    required:true,
     enum: ['male', 'female','others'],
-   },
-   Height:{
+    },
+    Height:{
     type:Number,
-    required:true,
-   },
-   Weight:{
+    },
+    Weight:{
     type:Number,
-    required:true,
-   },
-   Blood_group:{
+    },
+    Blood_group:{
     type:String,
-    required:true,
-   },
-   Injuries:[{
+    },
+    Injuries:[{
     type: Schema.Types.ObjectId,
     ref: 'Injuries',
-   }],
-   Performance:[{
+    }],
+    Performance:[{
     type: Schema.Types.ObjectId,
     ref:'Performance'
-   }],
-   Team:[
+    }],
+    Team:[
     {
         type:Schema.Types.ObjectId,
         ref:"Team"

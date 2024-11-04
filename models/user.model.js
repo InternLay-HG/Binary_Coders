@@ -6,8 +6,15 @@ const userSchema = new Schema({
     type:String,
     required:true,
     trim:true,
-   } ,
-   email: {
+    } ,
+    isVerified:{
+    type:Boolean,
+    default:false
+    },
+    verificationcode:{
+      type:String,
+    },
+    email: {
     type:String,
     required:true,
     trim:true,
@@ -16,7 +23,6 @@ const userSchema = new Schema({
    },
    password:{
     type:String,
-    required:[true ,"password is required"]
    },
    picture:{
       type:String,
@@ -29,7 +35,7 @@ const userSchema = new Schema({
     type:Boolean,
     default:false,
    },
-   isDirector:{
+   isAdmin:{
     type:Boolean,
     default:false,
    },
@@ -38,7 +44,7 @@ const userSchema = new Schema({
     default:false,
    },
    refreshToken:{
-           type:String
+      type:String
    }
 },{timestamps:true});
 
