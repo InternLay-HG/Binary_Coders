@@ -35,7 +35,24 @@ const teamSchema = new Schema({
    wins: { type: Number, default: 0 },
    losses: { type: Number, default: 0 },
    draws: { type: Number, default: 0 }
- }
+ },
+ budget: {
+  totalBudget: { type: Number, required: true },  
+  remainingBudget: { type: Number, default: 0 }, 
+  allocatedBudget: { 
+    type: Map, 
+    of: Number, 
+    default: {} 
+  },  
+  expenses: [
+    {
+      description: { type: String, required: true },  // Description of the expense
+      amount: { type: Number, required: true },       // Amount spent
+      date: { type: Date, default: Date.now },        // Date of the expense
+      category: { type: String }                      // Category of expense, e.g., "travel", "food"
+    }
+  ]
+}
 
 
 });
