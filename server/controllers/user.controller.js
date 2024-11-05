@@ -8,24 +8,27 @@ const RegisterUser = asyncHandler(async (req, res) => {
 
   // Validate required fields
   if ([name, email, password, role].some((field) => !field?.trim())) {
-    throw new ApiResponse(400, {}, "All fields are required");
+    return res.status(400).json(new ApiResponse(400, {}, "All fields are required"));
   }
 
   // Validate email
   const emailRegex = /^[a-zA-Z0-9._%+-]+@iiitranchi\.ac\.in$/;
   if (!emailRegex.test(email)) {
-    throw new ApiResponse(400, {}, "Invalid Email address");
+    return res.status(400).json(new ApiResponse(400, {}, "Invalid Email address"));
+
   }
   // Check if user already exists
   const existingUser = await User.findOne({ email:email,isVerified:true });
   if (existingUser) {
-    throw new ApiResponse(400, {}, "User with the same email already exists");
+    return res.status(400).json(new ApiResponse(400, {}, "User with the same email already exists"));
+  
   }
 
   // Create the user
   const user = await User.create({ name, email, password });
   if (!user) {
-    throw new ApiResponse(500, {}, "User creation failed");
+    return res.status(500).json(new ApiResponse(500, {}, "User creation failed"));
+  
   }
 
   // Map roles to boolean fields
@@ -42,7 +45,7 @@ const RegisterUser = asyncHandler(async (req, res) => {
   if (roleField) {
     user[roleField] = true;
   } else {
-    throw new ApiResponse(400, {}, "Invalid role provided");
+    return res.status(400).json(new ApiResponse(400, {}, "Invalid role provided"));
   }
 
   await user.save();
@@ -68,21 +71,22 @@ const verifyEmail=asyncHandler(async(req,res)=>{
     const userid=req.body.userid;
     const user = await User.findOne({ _id:userid});
     if (!user) {
-      throw new ApiResponse(404, {}, "User not found");
+      return res.status(400).josn(new ApiResponse(404, {}, "User not found"));
     }
     if(user.verificationcode!=verificationCode){
-      throw new ApiResponse(400, {}, "Invalid verification code");
+      return res.status(400).josn(new ApiResponse(400, {}, "Invalid verification code"));
     }
     user.isVerified=true;
     await user.save();
     return res
     .status(200)
-    .json(new ApiResponse(200, {user}, "verification  is completed successfully"));
+    .json(new ApiResponse(200, {}, "verification  is completed successfully"));
 
   }
   catch(error){
     console.log(error)
-     throw new ApiResponse(500,{},error.message||"failed to verify the email");
+    return res
+    .status(200).json(new ApiResponse(500,{},error.message||"failed to verify the email"))  
   }
 })
 
@@ -97,7 +101,7 @@ const generateRefereshTokens = async(userId) =>{
 
 
   } catch (error) {
-      throw new ApiResponse(500,{}, "Something went wrong while generating referesh and access token")
+    return res.status(400).josn(new ApiResponse(500,{}, "Something went wrong while generating referesh and access token"));
   }
 }
 
@@ -105,23 +109,23 @@ const loginuser=asyncHandler(async(req,res)=>{
   try{
     const {email,password}=req.body;
     if( !email){
-      throw new ApiResponse(400,{}, "email is required")
+      return res.status(400).josn( new ApiResponse(400,{}, "email is required"))
     }
     if(!password){
-      throw new ApiResponse(400,{},"Password is required")
+      return res.status(400).josn( new ApiResponse(400,{},"Password is required"))
     }
     const user=await User.findOne({email:email,isVerified:true})
     if(!user){
-      throw new ApiResponse(400,{},"User not found")
+      return res.status(400).josn( new ApiResponse(400,{},"User not found"))
     }
     const iscorrectPassword=await user.isPasswordCorrect(password)
     if(!iscorrectPassword){
-      throw new ApiResponse(400,{},"Password is incorrect")
+      return res.status(400).josn( new ApiResponse(400,{},"Password is incorrect"))
     }
     const {refreshToken , accessToken }=await generateRefereshTokens(user._id);
     const logedUser=await User.findById(user._id).select("-password -refreshToken");
     if(!logedUser){
-       throw new ApiResponse(500,{}," login failed ")
+      return res.status(500).josn( new ApiResponse(500,{}," login failed "))
     }
     const options = {
       httpOnly: true,
@@ -144,7 +148,7 @@ const getcurrentuser=asyncHandler(async(req,res)=>{
   try{
     const user=await User.findById(req.user._id).select("-password -refreshToken -verificationcode");
     if(!user){
-      throw new ApiResponse(500,{}," failed to get the user")
+      return res.status(500).josn( new ApiResponse(500,{}," failed to get the user"))
     }
     return res.status(200).json(new ApiResponse(200,user,"User found"))
     
@@ -155,5 +159,33 @@ const getcurrentuser=asyncHandler(async(req,res)=>{
   }
 })
 
+const logout=asyncHandler(async(req,res)=>{
+  try{
+    await User.findByIdAndUpdate(
+      req.user._id,
+      {
+         $unset:{
+           refreshToken:1
+         } 
+      },
+      {
+          new:true
+      }
+   )
+  const options={
+      httpOnly:true,
+      secure:true
+  }
+  return res.status(200)
+  .clearCookie("jwt",options)
+  .json(new ApiResponse(200,{},"user Logged Out "))
 
-export { RegisterUser,verifyEmail,loginuser ,getcurrentuser};
+  }
+  catch(error){
+    console.log("the error during logout",error);
+    return res.status(500).json(new ApiResponse(500,{},error.message||"failed to logout the current user"))
+
+  }
+})
+
+export { RegisterUser,verifyEmail,loginuser ,getcurrentuser,logout};
