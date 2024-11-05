@@ -18,7 +18,7 @@ const Events = () => {
         <li>
           <Link
             className="flex items-center text-white rounded-lg "
-            to="allEvents"
+            to="allevents"
           >
             <span className=" ms-3 whitespace-nowrap">AllEvents</span>
           </Link>
