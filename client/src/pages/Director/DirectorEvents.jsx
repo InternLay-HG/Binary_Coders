@@ -5,11 +5,11 @@ import Allevents from "./Allevents";
 const Events = () => {
   return (
     <div>
-    <div className='fixed inline-block  align-middle  w-full  bg-zinc-300 ' >
+    <div className='fixed inline-block  align-middle  w-full  bg-neutral-400 ' >
       <ul className=" flex font-medium ">
         <li>
           <Link
-            className="flex items-center  text-gray-900 rounded-lg "
+            className="flex items-center  text-white rounded-lg "
             to="calender"
           >
             <span className=" ms-3 whitespace-nowrap">Calender</span>
@@ -17,7 +17,7 @@ const Events = () => {
         </li>
         <li>
           <Link
-            className="flex items-center text-gray-900 rounded-lg "
+            className="flex items-center text-white rounded-lg "
             to="allEvents"
           >
             <span className=" ms-3 whitespace-nowrap">AllEvents</span>

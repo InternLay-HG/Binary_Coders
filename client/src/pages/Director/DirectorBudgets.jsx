@@ -6,11 +6,11 @@ import Fund from './Fund'
 const Budgets = () => {
   return (
     <div>
-    <div className='fixed inline-block  align-middle  w-full  bg-zinc-300 ' >
+    <div className='fixed inline-block  align-middle  w-full  bg-neutral-400 ' >
       <ul className=" flex font-medium ">
         <li>
           <Link
-            className="flex items-center  text-gray-900 rounded-lg "
+            className="flex items-center  text-white rounded-lg "
             to="dashboard"
           >
             <span className=" ms-3 whitespace-nowrap">Dashboard</span>
@@ -18,7 +18,7 @@ const Budgets = () => {
         </li>
         <li>
           <Link
-            className="flex items-center text-gray-900 rounded-lg "
+            className="flex items-center text-white rounded-lg "
             to="fund"
           >
             <span className=" ms-3 whitespace-nowrap">Funds</span>

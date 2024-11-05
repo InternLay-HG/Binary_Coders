@@ -36,7 +36,7 @@ const SportDirectorPage = () => {
 	}, [])
 	return (
 		<div className='static'>
-			<nav className='fixed top-0 z-50 w-full bg-white border-b border-gray-200 '>
+			<nav className='fixed top-0 z-50 w-full bg-cyan-800  '>
 				<div className='px-3 py-3 lg:px-5 lg:pl-3'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center justify-start rtl:justify-end'>
@@ -112,14 +112,14 @@ const SportDirectorPage = () => {
 
 			<aside
 				id='logo-sidebar'
-				className='fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0'
+				className='fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-sky-400  sm:translate-x-0'
 				aria-label='Sidebar'
 			>
-				<div className='h-full px-3 pb-4 overflow-y-auto bg-white '>
+				<div className='h-full px-3 pb-4 overflow-y-auto bg-sky-400'>
 					<ul className='space-y-2 font-medium'>
 						<li>
 							<Link
-								className='flex items-center p-2 text-gray-900 rounded-lg '
+								className='flex items-center p-2 text-white rounded-lg '
 								to='events'
 							>
 								<span className='flex-1 ms-3 whitespace-nowrap'>Events</span>
@@ -127,7 +127,7 @@ const SportDirectorPage = () => {
 						</li>
 						<li>
 							<Link
-								className='className="flex items-center p-2 text-gray-900 rounded-lg "'
+								className='className="flex items-center p-2 text-white rounded-lg "'
 								to='games'
 							>
 								<span className='flex-1 ms-3 whitespace-nowrap'>Games</span>
@@ -135,7 +135,7 @@ const SportDirectorPage = () => {
 						</li>
 						<li>
 							<Link
-								className='className="flex items-center p-2 text-gray-900 rounded-lg "'
+								className='className="flex items-center p-2 text-white rounded-lg "'
 								to='budgets'
 							>
 								<span className='flex-1 ms-3 whitespace-nowrap'>Budgets</span>
@@ -143,7 +143,7 @@ const SportDirectorPage = () => {
 						</li>
 						<li>
 							<Link
-								className='className="flex items-center p-2 text-gray-900 rounded-lg "'
+								className='className="flex items-center p-2 text-white rounded-lg "'
 								to='updates'
 							>
 								<span className='flex-1 ms-3 whitespace-nowrap'>Updates</span>
