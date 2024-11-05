@@ -128,9 +128,9 @@ const loginuser=asyncHandler(async(req,res)=>{
       secure: true
     }
     return res.status(200)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("jwt", refreshToken, options)
     .json(
-      new ApiResponse(200,logedUser,"Login successful")
+      new ApiResponse(200,{},"Login successful")
       )
 
   }
@@ -140,5 +140,20 @@ const loginuser=asyncHandler(async(req,res)=>{
   }
 })
 
+const getcurrentuser=asyncHandler(async(req,res)=>{
+  try{
+    const user=await User.findById(req.user._id).select("-password -refreshToken -verificationcode");
+    if(!user){
+      throw new ApiResponse(500,{}," failed to get the user")
+    }
+    return res.status(200).json(new ApiResponse(200,user,"User found"))
+    
+  }
+  catch(error){
+    console.log("the error during geting current user",error);
+    return res.status(500).json(new ApiResponse(500,{},error.message||"failed to get the current user"))
+  }
+})
 
-export { RegisterUser,verifyEmail,loginuser };
+
+export { RegisterUser,verifyEmail,loginuser ,getcurrentuser};
