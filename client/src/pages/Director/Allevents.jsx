@@ -11,11 +11,32 @@ const EventForm = () => {
     visibleTo: ['athlete', 'fan'],
   });
 
-  const handleSubmit = (e) => {
+  const [updates, setUpdates] = useState([])
+
+	const fetchUpdates = async () => {
+		const response = await fetch('http://localhost:5000/director/getUpdates')
+		setUpdates([...(await response.json())])
+	}
+
+	useEffect(() => {
+		fetchUpdates()
+	}, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Event Data:', eventData);
-    // You'd typically send this data to your backend here.
-    navigate('/allevents');
+    
+      const newUpdate = e.target.elements.newUpdate.value
+  
+      const res = await fetch('http://localhost:5000/director/addUpdate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: newUpdate,
+      })
+  
+      fetchUpdates()
+    
+    navigate('/');
   };
 
   return (
