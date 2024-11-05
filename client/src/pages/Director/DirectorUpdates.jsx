@@ -42,8 +42,10 @@ const Updates = () => {
       </form>
 
       {updates?.map((item, i) => (
-        <div key={i}>
+        <div className='flex-grow m-3' key={i}>
+        <div className='text-center bg-gray-500 block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300'>
           {item.text}: {new Date(item.date).toLocaleDateString('en-CA')}
+          </div>
         </div>
       ))}
     </div>

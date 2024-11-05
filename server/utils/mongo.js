@@ -19,5 +19,12 @@ const users = mongoose.model(
 		isDirector: { type: String, default: 'false' },
 	})
 )
+const updates = mongoose.model(
+	'updates',
+	new mongoose.Schema({
+		text: String,
+		date: { type: Date, default: Date.now },
+	})
+)
 
-export { db as default, users }
+export { db as default, updates, users }

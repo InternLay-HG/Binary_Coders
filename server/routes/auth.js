@@ -6,125 +6,124 @@ import { users } from '../utils/mongo.js'
 
 const router = express.Router()
 const client = new OAuth2Client(
-	process.env.GOOGLE_CLIENT_ID,
-	process.env.GOOGLE_CLIENT_SECRET,
-	'http://localhost:5000/auth/google/callback'
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'http://localhost:5000/auth/google/callback'
 )
 
 // Route for Google OAuth Login
 router.get('/google', (req, res) => {
-	const authUrl = client.generateAuthUrl({
-		scope: ['profile', 'email'],
-		redirect_uri: `http://localhost:5000/auth/google/callback`,
-		state: JSON.stringify({ role: req.query.role }),
-	})
-	res.redirect(authUrl)
+  const authUrl = client.generateAuthUrl({
+    scope: ['profile', 'email'],
+    redirect_uri: `http://localhost:5000/auth/google/callback`,
+    state: JSON.stringify({ role: req.query.role }),
+  })
+  res.redirect(authUrl)
 })
 
 // Google OAuth Callback Route
 router.get('/google/callback', async (req, res) => {
-	try {
-		const { role } = JSON.parse(req.query.state)
+  try {
+    const { role } = JSON.parse(req.query.state)
 
-		// autheticate user and get profile
-		const { tokens } = await client.getToken(req.query.code)
-		client.setCredentials(tokens)
-		const payload = (
-			await client.verifyIdToken({
-				idToken: tokens.id_token,
-				audience: process.env.GOOGLE_CLIENT_ID,
-			})
-		).getPayload()
+    // autheticate user and get profile
+    const { tokens } = await client.getToken(req.query.code)
+    client.setCredentials(tokens)
+    const payload = (
+      await client.verifyIdToken({
+        idToken: tokens.id_token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      })
+    ).getPayload()
 
-		// only for iiit ranchi users
-		if (!isValidEmailDomain(payload.email)) {
-			return res.status(403).send('Only users from IIIT Ranchi can sign in')
-		}
+    // only for iiit ranchi users
+    if (!isValidEmailDomain(payload.email)) {
+      return res.status(403).send('Only users from IIIT Ranchi can sign in')
+    }
 
-		let user = await users.findById(payload.sub)
+    let user = await users.findById(payload.sub)
 
-		if (!user) {
-			// Add new user record in db
-			user = await users.create({
-				_id: payload.sub,
-				name: payload.name,
-				email: payload.email,
-				picture: payload.picture,
-			})
-		}
+    if (!user) {
+      // Add new user record in db
+      user = await users.create({
+        _id: payload.sub,
+        name: payload.name,
+        email: payload.email,
+        picture: payload.picture,
+      })
+    }
 
-		let setRole
+    let setRole
 
-		if (role == 'fan') {
-			setRole = 'fan'
-		} else if (role == 'player') {
-			if (user.isPlayer === 'true') {
-				setRole = 'player'
-			} else {
-				setRole = 'player_pending'
-				user.picture = 'requested'
-			}
-		} else if (role == 'coach') {
-			if (user.isCoach === 'true') {
-				setRole = 'coach'
-			} else {
-				setRole = 'coach_pending'
-				user.isCoach = 'requested'
-			}
-		} else if (role == 'admin') {
-			if (user.isAdmin === 'true') {
-				setRole = 'admin'
-			} else {
-				setRole = 'admin_pending'
-				user.isAdmin = 'requested'
-			}
-		}
-		await user.save()
-		console.log(user)
+    if (role == 'fan') {
+      setRole = 'fan'
+    } else if (role == 'player') {
+      if (user.isPlayer === 'true') {
+        setRole = 'player'
+      } else {
+        setRole = 'player_pending'
+        user.picture = 'requested'
+      }
+    } else if (role == 'coach') {
+      if (user.isCoach === 'true') {
+        setRole = 'coach'
+      } else {
+        setRole = 'coach_pending'
+        user.isCoach = 'requested'
+      }
+    } else if (role == 'admin') {
+      if (user.isAdmin === 'true') {
+        setRole = 'admin'
+      } else {
+        setRole = 'admin_pending'
+        user.isAdmin = 'requested'
+      }
+    }
+    await user.save()
+    console.log(user)
 
-		// Generate JWT token for the user
-		const token = jwt.sign(
-			{
-				id: payload.sub,
-				role: setRole,
-			},
-			process.env.JWT_SECRET,
-			{ expiresIn: '30d' }
-		)
+    // Generate JWT token for the user
+    const token = jwt.sign(
+      {
+        id: payload.sub,
+        role: setRole,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '30d' }
+    )
 
-		// Set JWT token as an HTTP-only cookie
-		res.cookie('jwt', token, {
-			httpOnly: true,
-			secure: false,
-			sameSite: 'strict',
-		})
+    // Set JWT token as an HTTP-only cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    })
 
-		res.redirect(`${process.env.FRONTEND_URL}/`)
-	} catch (error) {
-		console.error('Error during Google authentication:', error)
-		res.status(500).json({ error: 'Internal Server Error' })
-	}
+    res.redirect(`${process.env.FRONTEND_URL}/`)
+  } catch (error) {
+    res.redirect('http://localhost:5000/google')
+  }
 })
 
 // Middleware to protect routes
 function authenticateJWT(req, res, next) {
-	const token = req.cookies.jwt
+  const token = req.cookies.jwt
 
-	if (token) {
-		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-			console.log(user)
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.status(403).json({ message: 'Invalid token' })
 
-			if (err) return res.status(403).json({ message: 'Invalid token' })
-			req.id = user.id
-			next()
-		})
-	} else {
-		res.status(401).json({ message: 'Plz login' })
-	}
+      req.id = user.id
+      next()
+    })
+  } else {
+    res.status(401).json({ message: 'Plz login' })
+  }
 }
 
 function isValidEmailDomain(email) {
-	return email.split('@')[1].split('.')[0] === 'iiitranchi'
+  return email.split('@')[1].split('.')[0] === 'iiitranchi'
 }
 
 export { authenticateJWT, router as default }
