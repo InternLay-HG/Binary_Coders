@@ -15,7 +15,8 @@ const client = new OAuth2Client(
 router.get('/google', (req, res) => {
 	const authUrl = client.generateAuthUrl({
 		scope: ['profile', 'email'],
-		redirect_uri: `http://localhost:5000/auth/google/callback`
+		redirect_uri: `http://localhost:5000/auth/google/callback`,
+		state: JSON.stringify({ role: req.query.role }),
 	})
 	res.redirect(authUrl)
 })
@@ -23,13 +24,15 @@ router.get('/google', (req, res) => {
 // Google OAuth Callback Route
 router.get('/google/callback', async (req, res) => {
 	try {
+		const { role } = JSON.parse(req.query.state)
+
 		// autheticate user and get profile
 		const { tokens } = await client.getToken(req.query.code)
 		client.setCredentials(tokens)
 		const payload = (
 			await client.verifyIdToken({
 				idToken: tokens.id_token,
-				audience: process.env.GOOGLE_CLIENT_ID
+				audience: process.env.GOOGLE_CLIENT_ID,
 			})
 		).getPayload()
 
@@ -38,31 +41,65 @@ router.get('/google/callback', async (req, res) => {
 			return res.status(403).send('Only users from IIIT Ranchi can sign in')
 		}
 
-		const existingUser = await users.findOne({ _id: payload.sub })
+		let user = await users.findById(payload.sub)
 
-		if (!existingUser) {
+		if (!user) {
 			// Add new user record in db
-			await users.insertOne({
+			user = await users.create({
 				_id: payload.sub,
 				name: payload.name,
 				email: payload.email,
-				picture: payload.picture
+				picture: payload.picture,
 			})
 		}
 
+		let setRole
+
+		if (role == 'fan') {
+			setRole = 'fan'
+		} else if (role == 'player') {
+			if (user.isPlayer === 'true') {
+				setRole = 'player'
+			} else {
+				setRole = 'player_pending'
+				user.picture = 'requested'
+			}
+		} else if (role == 'coach') {
+			if (user.isCoach === 'true') {
+				setRole = 'coach'
+			} else {
+				setRole = 'coach_pending'
+				user.isCoach = 'requested'
+			}
+		} else if (role == 'admin') {
+			if (user.isAdmin === 'true') {
+				setRole = 'admin'
+			} else {
+				setRole = 'admin_pending'
+				user.isAdmin = 'requested'
+			}
+		}
+		await user.save()
+		console.log(user)
+
 		// Generate JWT token for the user
-		const token = jwt.sign({ id: payload.sub }, process.env.JWT_SECRET, {
-			expiresIn: '30d'
-		})
+		const token = jwt.sign(
+			{
+				id: payload.sub,
+				role: setRole,
+			},
+			process.env.JWT_SECRET,
+			{ expiresIn: '30d' }
+		)
 
 		// Set JWT token as an HTTP-only cookie
 		res.cookie('jwt', token, {
 			httpOnly: true,
 			secure: false,
-			sameSite: 'strict'
+			sameSite: 'strict',
 		})
 
-		res.redirect(`${process.env.FRONTEND_URL}/dashboard`)
+		res.redirect(`${process.env.FRONTEND_URL}/`)
 	} catch (error) {
 		console.error('Error during Google authentication:', error)
 		res.status(500).json({ error: 'Internal Server Error' })
@@ -75,6 +112,8 @@ function authenticateJWT(req, res, next) {
 
 	if (token) {
 		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+			console.log(user)
+
 			if (err) return res.status(403).json({ message: 'Invalid token' })
 			req.id = user.id
 			next()
