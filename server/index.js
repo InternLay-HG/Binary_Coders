@@ -3,6 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
+import directorRoutes from './routes/director.js'
 import { users } from './utils/mongo.js'
 
 const app = express()
@@ -13,6 +14,7 @@ app.use(
 		credentials: true,
 	})
 )
+app.use(express.text())
 
 app.use('/auth', authRoutes)
 
@@ -26,6 +28,8 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 	rename(user, '_id', 'id')
 	res.json(user)
 })
+
+app.use('/director', directorRoutes)
 
 app.listen(5000, () => {
 	console.log('Server running on http://localhost:5000')

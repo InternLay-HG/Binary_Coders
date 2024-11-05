@@ -5,11 +5,7 @@ import jwt from 'jsonwebtoken'
 import { users } from '../utils/mongo.js'
 
 const router = express.Router()
-const client = new OAuth2Client(
-	process.env.GOOGLE_CLIENT_ID,
-	process.env.GOOGLE_CLIENT_SECRET,
-	'http://localhost:5000/auth/google/callback'
-)
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:5000/auth/google/callback')
 
 // Route for Google OAuth Login
 router.get('/google', (req, res) => {
@@ -97,12 +93,12 @@ router.get('/google/callback', async (req, res) => {
 			httpOnly: true,
 			secure: false,
 			sameSite: 'strict',
+			maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
 		})
 
 		res.redirect(`${process.env.FRONTEND_URL}/`)
 	} catch (error) {
-		console.error('Error during Google authentication:', error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.redirect('http://localhost:5000/google')
 	}
 })
 
@@ -112,9 +108,8 @@ function authenticateJWT(req, res, next) {
 
 	if (token) {
 		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-			console.log(user)
-
 			if (err) return res.status(403).json({ message: 'Invalid token' })
+
 			req.id = user.id
 			next()
 		})

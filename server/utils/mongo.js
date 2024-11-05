@@ -20,4 +20,12 @@ const users = mongoose.model(
 	})
 )
 
-export { db as default, users }
+const updates = mongoose.model(
+	'updates',
+	new mongoose.Schema({
+		text: String,
+		date: { type: Date, default: Date.now },
+	})
+)
+
+export { db as default, updates, users }
