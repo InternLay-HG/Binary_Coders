@@ -35,7 +35,7 @@ const App = () => {
 		<AuthContext.Provider value={user}>
 			<Router>
 				<Routes>
-					<Route path='/' element={<Home />} />
+					
 					{user?.id && (
 						<>
 							<Route path='fan/*' element={<Fan />} />
@@ -46,6 +46,7 @@ const App = () => {
 						</>
 					)}
 				</Routes>
+				<Route path='/' element={<Home />} />
 			</Router>
 		</AuthContext.Provider>
 	)
