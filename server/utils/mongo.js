@@ -27,4 +27,13 @@ const updates = mongoose.model(
 	})
 )
 
-export { db as default, updates, users }
+const events = mongoose.model(
+	'events',
+	new mongoose.Schema({
+		text:String,
+		start:{type:Date},
+		end:{type:Date},
+		visibleTo:[{type:String}]
+	})
+)
+export { db as default, updates, users, events }

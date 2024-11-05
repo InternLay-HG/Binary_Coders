@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CalendarComponent from '../../components/CalenderComponent';
 import { useUser } from '../../context/UserContext';
@@ -8,8 +8,22 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/events/getevents');
+      const data = await response.json();
+      setEvents(data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
   const handleAddEventClick = () => {
-    navigate('/events');
+    navigate('events'); // Navigate to the correct path
   };
 
   return (

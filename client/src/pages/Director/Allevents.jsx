@@ -1,81 +1,126 @@
-// src/components/EventForm.js
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
-const EventForm = () => {
-  const navigate = useNavigate();
-  const [eventData, setEventData] = useState({
-    title: '',
+const EventManager = () => {
+  const [events, setEvents] = useState([]);
+  const [newEvent, setNewEvent] = useState({
+    text: '',
     start: '',
     end: '',
-    visibleTo: ['athlete', 'fan'],
+    visibleTo: '',
   });
 
-  const [updates, setUpdates] = useState([])
+  // Fetch events from the server
+  const fetchEvents = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/events/getevents');
+      const data = await res.json();
+      setEvents(data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
-	const fetchUpdates = async () => {
-		const response = await fetch('http://localhost:5000/director/getUpdates')
-		setUpdates([...(await response.json())])
-	}
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
-	useEffect(() => {
-		fetchUpdates()
-	}, [])
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewEvent({ ...newEvent, [name]: value });
+  };
 
-  const handleSubmit = async (e) => {
+  // Add a new event
+  const addEvent = async (e) => {
     e.preventDefault();
-    console.log('Event Data:', eventData);
-    
-      const newUpdate = e.target.elements.newUpdate.value
-  
-      const res = await fetch('http://localhost:5000/director/addUpdate', {
+    try {
+      const res = await fetch('http://localhost:5000/events/addevents', {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: newUpdate,
-      })
-  
-      fetchUpdates()
-    
-    navigate('/');
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...newEvent,
+          visibleTo: newEvent.visibleTo.split(','),
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+
+      // Clear the form and refresh events
+      setNewEvent({ text: '', start: '', end: '', visibleTo: '' });
+      fetchEvents();
+    } catch (error) {
+      console.error('Error adding event:', error);
+    }
+  };
+
+  // Delete an event by ID
+  const deleteEvent = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/events/delevents/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+
+      fetchEvents();
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Event Title"
-        value={eventData.title}
-        onChange={(e) => setEventData({ ...eventData, title: e.target.value })}
-        required
-      />
-      <input
-        type="datetime-local"
-        value={eventData.start}
-        onChange={(e) => setEventData({ ...eventData, start: e.target.value })}
-        required
-      />
-      <input
-        type="datetime-local"
-        value={eventData.end}
-        onChange={(e) => setEventData({ ...eventData, end: e.target.value })}
-        required
-      />
-      <select
-        multiple
-        value={eventData.visibleTo}
-        onChange={(e) =>
-          setEventData({
-            ...eventData,
-            visibleTo: [...e.target.selectedOptions].map((o) => o.value),
-          })
-        }
-      >
-        <option value="athlete">Athlete</option>
-        <option value="fan">Fan</option>
-      </select>
-      <button type="submit">Add Event</button>
-    </form>
+    <div>
+      <h1>Event Manager</h1>
+      <form onSubmit={addEvent}>
+        <input
+          type="text"
+          name="text"
+          value={newEvent.text}
+          onChange={handleInputChange}
+          placeholder="Event Title"
+          required
+        />
+        <input
+          type="datetime-local"
+          name="start"
+          value={newEvent.start}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="datetime-local"
+          name="end"
+          value={newEvent.end}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="visibleTo"
+          value={newEvent.visibleTo}
+          onChange={handleInputChange}
+          placeholder="Visible To (comma-separated)"
+          required
+        />
+        <button type="submit">Add Event</button>
+      </form>
+
+      <h2>Events</h2>
+      <ul>
+        {events.map((event) => (
+          <li key={event._id}>
+            <strong>{event.text}</strong> | {new Date(event.start).toLocaleString()} -{' '}
+            {new Date(event.end).toLocaleString()} | Visible to: {event.visibleTo.join(', ')}
+            <button onClick={() => deleteEvent(event._id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
-export default EventForm;
+export default EventManager;
