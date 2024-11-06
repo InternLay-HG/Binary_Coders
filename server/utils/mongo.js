@@ -41,4 +41,16 @@ const teams = mongoose.model(
 	})
 )
 
-export { updates, users, teams }
+const events = mongoose.model(
+	'events',
+	new mongoose.Schema({
+		title: String,
+		description: String,
+		venue: String,
+		venue: String,
+		start: Date,
+		end: Date,
+	})
+)
+
+export { events, teams, updates, users }
