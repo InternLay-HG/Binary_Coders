@@ -74,10 +74,11 @@ const EventManager = () => {
   
 
   return (
-    <div>
-      <h1>Event Manager</h1>
+    <div className='ml-3 flex flex-col'>
+      <h1 >Event Manager</h1>
       <form onSubmit={addEvent}>
         <input
+        className='bg-gray-500 block p-2.5 w-full text-sm text-white rounded-lg border border-gray-300'
           type="text"
           name="text"
           value={newEvent.text}
@@ -85,7 +86,9 @@ const EventManager = () => {
           placeholder="Event Title"
           required
         />
+        <div className='flex '>
         <input
+        className='bg-gray-500 block p-1 text-sm text-white rounded-lg border border-gray-300'
           type="datetime-local"
           name="start"
           value={newEvent.start}
@@ -93,6 +96,7 @@ const EventManager = () => {
           required
         />
         <input
+         className='bg-gray-500 block p-1 text-sm text-white rounded-lg border border-gray-300'
           type="datetime-local"
           name="end"
           value={newEvent.end}
@@ -100,6 +104,7 @@ const EventManager = () => {
           required
         />
         <input
+         className='bg-gray-500 block p-1 text-sm text-white rounded-lg border border-gray-300'
           type="text"
           name="visibleTo"
           value={newEvent.visibleTo}
@@ -107,7 +112,8 @@ const EventManager = () => {
           placeholder="Visible To (comma-separated)"
           required
         />
-        <button type="submit">Add Event</button>
+        <button className=' text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ml-3 px-5 py-2.5 ' type="submit">Add Event</button>
+        </div>
       </form>
 
       <h2>Events</h2>
@@ -116,7 +122,7 @@ const EventManager = () => {
           <li key={event._id}>
             <strong>{event.text}</strong> | {new Date(event.start).toLocaleString()} -{' '}
             {new Date(event.end).toLocaleString()} | Visible to: {event.visibleTo.join(', ')}
-            <button onClick={() => deleteEvent(event._id)}>Delete</button>
+            <button className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ml-3 my-2 px-5 py-1" type="submit"  onClick={() => deleteEvent(event._id)}>Delete</button>
           </li>
         ))}
       </ul>

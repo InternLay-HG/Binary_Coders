@@ -26,7 +26,7 @@ const Events = () => {
         
       </ul>
     </div>
-    <div className='absolute  mt-8 ml-3'>
+    <div className='absolute  mt-8 '>
       {/* Nested route*/}
       <Routes>
       <Route path="/" element= {<Navigate replace to="calender"/>}/>
