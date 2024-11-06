@@ -4,6 +4,7 @@ import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
 import directorRoutes from './routes/director.js'
+// import directorRoutes from './routes/events.js'
 import { users } from './utils/mongo.js'
 
 const app = express()
@@ -30,6 +31,7 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 })
 
 app.use('/director', directorRoutes)
+// app.use('/events', eventsRoutes)
 
 app.listen(5000, () => {
 	console.log('Server running on http://localhost:5000')

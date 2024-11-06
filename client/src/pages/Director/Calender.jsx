@@ -4,13 +4,13 @@ import CalendarComponent from '../../components/CalenderComponent';
 import { useUser } from '../../context/UserContext';
 
 const Dashboard = () => {
-  const { user } = useUser();
+  // const { user } = useUser();
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/events/getevents');
+      const response = await fetch('http://localhost:5000/director/getevents');
       const data = await response.json();
       setEvents(data);
     } catch (error) {
@@ -23,20 +23,21 @@ const Dashboard = () => {
   }, []);
 
   const handleAddEventClick = () => {
-    navigate('events'); // Navigate to the correct path
+    navigate('/director/events/allevents'); // Navigate to the correct path
   };
 
   return (
     <div>
       <h1>Dashboard</h1>
-      {user.role === 'coach' || user.role === 'director' ? (
+      {/* {user?.role === 'coach' || user?.role === 'director' ? (
         <button onClick={handleAddEventClick}>Add New Event</button>
-      ) : null}
+      ) : null}*/}
+      <button onClick={handleAddEventClick}>Add New Event</button>
       <CalendarComponent
         events={events}
         onSelectEvent={(event) => console.log('Event selected:', event)}
         onDoubleClickEvent={() => {}}
-      />
+      /> 
     </div>
   );
 };

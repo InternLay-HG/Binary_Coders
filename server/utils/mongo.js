@@ -27,13 +27,13 @@ const updates = mongoose.model(
 	})
 )
 
-const events = mongoose.model(
-	'events',
+const Events = mongoose.model(
+	'Events',
 	new mongoose.Schema({
-		text:String,
-		start:{type:Date},
-		end:{type:Date},
-		visibleTo:[{type:String}]
+		text: { type: String},
+		start: { type: Date},
+		end: { type: Date },
+		visibleTo: { type: [String],  enum: ["athlete", "fan", "coach", "director"] }
 	})
 )
-export { db as default, updates, users, events }
+export { db as default, updates, users, Events }

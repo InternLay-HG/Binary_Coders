@@ -12,7 +12,7 @@ const EventManager = () => {
   // Fetch events from the server
   const fetchEvents = async () => {
     try {
-      const res = await fetch('http://localhost:5000/events/getevents');
+      const res = await fetch('http://localhost:5000/director/getevents');
       const data = await res.json();
       setEvents(data);
     } catch (error) {
@@ -34,7 +34,7 @@ const EventManager = () => {
   const addEvent = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/events/addevents', {
+      const res = await fetch('http://localhost:5000/director/addevents', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -58,19 +58,20 @@ const EventManager = () => {
   // Delete an event by ID
   const deleteEvent = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/events/delevents/${id}`, {
-        method: 'DELETE',
+      const res = await fetch(`http://localhost:5000/director/delevents/${id}`, {
+        method: 'DELETE',  // This makes a DELETE request to the backend
       });
-
+  
       if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
+        throw new Error(`Error: ${res.status}`);  // Error handling if the response is not okay (not in the 200-299 range)
       }
-
-      fetchEvents();
+  
+      fetchEvents();  // Assuming this is a function that refreshes your event list after deletion
     } catch (error) {
-      console.error('Error deleting event:', error);
+      console.error('Error deleting event:', error);  // Log any error that occurs
     }
   };
+  
 
   return (
     <div>
