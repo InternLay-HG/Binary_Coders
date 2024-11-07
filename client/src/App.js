@@ -19,6 +19,8 @@ const App = () => {
 		;(async () => {
 			const response = await fetch(`${apiUrl}/getuser`, {
 				credentials: 'include',
+				secure: window.location.hostname !== 'localhost',
+				sameSite: 'None',
 			})
 
 			const data = await response.json()
