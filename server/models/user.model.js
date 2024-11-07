@@ -7,13 +7,13 @@ const userSchema = new Schema({
     required:true,
     trim:true,
     } ,
-    isVerified:{
-    type:Boolean,
-    default:false
-    },
-    verificationcode:{
-      type:String,
-    },
+    // isVerified:{
+    // type:Boolean,
+    // default:false
+    // },
+    // verificationcode:{
+    //   type:String,
+    // },
     email: {
     type:String,
     required:true,

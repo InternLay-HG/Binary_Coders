@@ -40,13 +40,12 @@ const RegisterWithGoogle = asyncHandler(async (req, res) => {
 	   throw new ApiResponse(400, {}, "Invalid Email address");
 	 }
   
-	  let user = await User.findOne({ email: payload.email , isVerified:true})
+	  let user = await User.findOne({ email: payload.email})
 	  if (!user) {
 		user=	await  User.create({
 		  name: payload.name,
 		  email: payload.email,
 		  picture: payload.picture,
-		  isVerified:true
 		})
 		  }
 	  if (!user) {

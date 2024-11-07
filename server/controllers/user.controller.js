@@ -18,7 +18,7 @@ const RegisterUser = asyncHandler(async (req, res) => {
 
   }
   // Check if user already exists
-  const existingUser = await User.findOne({ email:email,isVerified:true });
+  const existingUser = await User.findOne({ email:email });
   if (existingUser) {
     return res.status(400).json(new ApiResponse(400, {}, "User with the same email already exists"));
   
@@ -49,14 +49,14 @@ const RegisterUser = asyncHandler(async (req, res) => {
   }
 
   await user.save();
-  const verificationCode = await sendVerificationEmail(email, name);
-  user.verificationcode=verificationCode;
-  await user.save();
+  // const verificationCode = await sendVerificationEmail(email, name);
+  // user.verificationcode=verificationCode;
+  // await user.save();
 
   // Respond with success message
   return res
     .status(200)
-    .json(new ApiResponse(200, {userid:user._id}, "verification code is send to your email"));
+    .json(new ApiResponse(200, {userid:user._id}, "user is regsitered successfully "));
 }
 catch(error){
   console.log("the error during registertion is ",error)
@@ -64,31 +64,31 @@ catch(error){
 };
 });
 
-const verifyEmail=asyncHandler(async(req,res)=>{
-  try{
+// const verifyEmail=asyncHandler(async(req,res)=>{
+//   try{
 
-    const verificationCode=req.body.verificationCode;
-    const userid=req.body.userid;
-    const user = await User.findOne({ _id:userid});
-    if (!user) {
-      return res.status(400).josn(new ApiResponse(404, {}, "User not found"));
-    }
-    if(user.verificationcode!=verificationCode){
-      return res.status(400).josn(new ApiResponse(400, {}, "Invalid verification code"));
-    }
-    user.isVerified=true;
-    await user.save();
-    return res
-    .status(200)
-    .json(new ApiResponse(200, {}, "verification  is completed successfully"));
+//     const verificationCode=req.body.verificationCode;
+//     const userid=req.body.userid;
+//     const user = await User.findOne({ _id:userid});
+//     if (!user) {
+//       return res.status(400).josn(new ApiResponse(404, {}, "User not found"));
+//     }
+//     if(user.verificationcode!=verificationCode){
+//       return res.status(400).josn(new ApiResponse(400, {}, "Invalid verification code"));
+//     }
+//     user.isVerified=true;
+//     await user.save();
+//     return res
+//     .status(200)
+//     .json(new ApiResponse(200, {}, "verification  is completed successfully"));
 
-  }
-  catch(error){
-    console.log(error)
-    return res
-    .status(200).json(new ApiResponse(500,{},error.message||"failed to verify the email"))  
-  }
-})
+//   }
+//   catch(error){
+//     console.log(error)
+//     return res
+//     .status(200).json(new ApiResponse(500,{},error.message||"failed to verify the email"))  
+//   }
+// })
 
 const generateRefereshTokens = async(userId) =>{
   try {
@@ -114,7 +114,7 @@ const loginuser=asyncHandler(async(req,res)=>{
     if(!password){
       return res.status(400).josn( new ApiResponse(400,{},"Password is required"))
     }
-    const user=await User.findOne({email:email,isVerified:true})
+    const user=await User.findOne({email:email})
     if(!user){
       return res.status(400).josn( new ApiResponse(400,{},"User not found"))
     }
@@ -146,7 +146,7 @@ const loginuser=asyncHandler(async(req,res)=>{
 
 const getcurrentuser=asyncHandler(async(req,res)=>{
   try{
-    const user=await User.findById(req.user._id).select("-password -refreshToken -verificationcode");
+    const user=await User.findById(req.user._id).select("-password -refreshToken ");
     if(!user){
       return res.status(500).josn( new ApiResponse(500,{}," failed to get the user"))
     }
@@ -188,4 +188,6 @@ const logout=asyncHandler(async(req,res)=>{
   }
 })
 
-export { RegisterUser,verifyEmail,loginuser ,getcurrentuser,logout};
+export { RegisterUser
+  // ,verifyEmail
+  ,loginuser ,getcurrentuser,logout};
