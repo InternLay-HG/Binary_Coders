@@ -22,7 +22,8 @@ const users = mongoose.model(
 const updates = mongoose.model(
 	'updates',
 	new mongoose.Schema({
-		text: String,
+		title: String,
+		content: String,
 		date: { type: Date, default: Date.now },
 	})
 )
@@ -36,4 +37,16 @@ const Events = mongoose.model(
 		visibleTo: { type: [String],  enum: ["athlete", "fan", "coach", "director"] }
 	})
 )
-export { db as default, updates, users, Events }
+// ideally we should store the ids of the players and their names
+const teams = mongoose.model(
+	'teams',
+	new mongoose.Schema({
+		teamName: String,
+		sport: String,
+		coach: String,
+		captain: String,
+		players: [String],
+	})
+)
+
+export { updates, users, teams }

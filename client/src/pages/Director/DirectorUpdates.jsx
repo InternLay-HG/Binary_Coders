@@ -4,8 +4,9 @@ const Updates = () => {
   const [updates, setUpdates] = useState([])
 
   const fetchUpdates = async () => {
-    const response = await fetch('http://localhost:5000/director/getUpdates')
-    setUpdates([...(await response.json())])
+    const response = await fetch('http://localhost:5000/getUpdates')
+		const data = await response.json()
+		setUpdates([...data])
   }
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const Updates = () => {
     e.preventDefault()
     const newUpdate = e.target.elements.newUpdate.value
 
-    const res = await fetch('http://localhost:5000/director/addUpdate', {
+    await fetch('http://localhost:5000/addUpdate', {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: newUpdate,
@@ -44,7 +45,7 @@ const Updates = () => {
       {updates?.map((item, i) => (
         <div className='m-3' key={i}>
         <div className='text-center bg-gray-500 block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300'>
-          {item.text}: {new Date(item.date).toLocaleDateString('en-CA')}
+        {item.content}: {new Date(item.date).toLocaleDateString('en-CA')}
           </div>
         </div>
       ))}

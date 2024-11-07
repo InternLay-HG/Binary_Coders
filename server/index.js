@@ -3,9 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
-import directorRoutes from './routes/director.js'
-// import directorRoutes from './routes/events.js'
-import { users } from './utils/mongo.js'
+import { teams, updates, users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
@@ -30,9 +28,22 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 	res.json(user)
 })
 
-app.use('/director', directorRoutes)
-// app.use('/events', eventsRoutes)
+app.post('/addUpdate', async (req, res) => {
+	const newUpdate = req.body
+	console.log(newUpdate)
+	await updates.create({ text: newUpdate })
+	res.sendStatus(200)
+})
 
+app.get('/getUpdates', async (req, res) => {
+	const allUpdates = await updates.find()
+	res.json(allUpdates)
+})
+
+app.get('/getTeams', async (req, res) => {
+	const allteams = await teams.find()
+	res.json(allteams)
+})
 app.listen(5000, () => {
 	console.log('Server running on http://localhost:5000')
 })
