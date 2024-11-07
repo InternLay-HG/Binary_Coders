@@ -9,8 +9,10 @@ const users = mongoose.model(
 	new mongoose.Schema({
 		_id: { type: String, required: true },
 		name: String,
+		// password: String,
 		email: String,
 		picture: String,
+		isFan: { type: String, default: 'true' },
 		isAthlete: { type: String, default: 'true' },
 		isCoach: { type: String, default: 'true' },
 		isDirector: { type: String, default: 'true' },
@@ -44,9 +46,9 @@ const events = mongoose.model(
 		title: String,
 		description: String,
 		venue: String,
-		venue: String,
 		start: Date,
 		end: Date,
+		teams: [String],
 	})
 )
 
