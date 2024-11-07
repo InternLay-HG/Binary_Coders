@@ -28,6 +28,7 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 
 	user = { ...user._doc }
 	rename(user, '_id', 'id')
+	console.log(user)
 	res.json(user)
 })
 

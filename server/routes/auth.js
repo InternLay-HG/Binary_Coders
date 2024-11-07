@@ -19,16 +19,12 @@ router.get('/google', (req, res) => {
 		state: JSON.stringify({ role: req.query.role }),
 	})
 
-	console.log('redirect')
-
 	res.redirect(authUrl)
 })
 
 // Google OAuth Callback Route
 router.get('/google/callback', async (req, res) => {
 	try {
-		console.log('in redirect')
-
 		const { role } = JSON.parse(req.query.state)
 
 		// autheticate user and get profile
@@ -85,7 +81,6 @@ router.get('/google/callback', async (req, res) => {
 			}
 		}
 		await user.save()
-		console.log(user)
 
 		// Generate JWT token for the user
 		const token = jwt.sign(
@@ -105,7 +100,7 @@ router.get('/google/callback', async (req, res) => {
 			maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
 		})
 
-		console.log('login done')
+		console.log('logged user in:', user.name)
 
 		res.redirect(`${process.env.FRONTEND_URL}/`)
 	} catch (error) {
