@@ -110,7 +110,10 @@ router.get('/google/callback', async (req, res) => {
 
 // Middleware to protect routes
 function authenticateJWT(req, res, next) {
+	console.log('in auth')
+
 	const token = req.cookies.jwt
+	console.log(token)
 
 	if (token) {
 		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

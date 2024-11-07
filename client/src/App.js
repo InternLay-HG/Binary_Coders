@@ -36,6 +36,7 @@ const App = () => {
 		<AuthContext.Provider value={user}>
 			<Router>
 				<Routes>
+					{/* redo */}
 					{user?.id && (
 						<>
 							<Route path='fan/*' element={<Fan />} />
