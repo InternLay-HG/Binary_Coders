@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import apiurl from '../../../config'
 
 const Budgets = () => {
 	const [budgets, setBudgets] = useState([])
 	const sortByDate = (a, b) => new Date(b.date) - new Date(a.date)
 
 	const fetchBudgets = async () => {
-		const response = await fetch('http://localhost:5000/getBudgets')
+		const response = await fetch(`${apiurl}/getBudgets`)
 		const data = await response.json()
 
 		setBudgets({

@@ -1,10 +1,7 @@
 import 'dotenv/config'
 import mongoose from 'mongoose'
 
-await mongoose.connect(process.env.MONGO_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-})
+await mongoose.connect(process.env.MONGO_URI)
 const db = mongoose.connection.db
 
 const users = mongoose.model(
@@ -14,9 +11,9 @@ const users = mongoose.model(
 		name: String,
 		email: String,
 		picture: String,
-		isAthlete: { type: String, default: 'false' },
-		isCoach: { type: String, default: 'false' },
-		isDirector: { type: String, default: 'false' },
+		isAthlete: { type: String, default: 'true' },
+		isCoach: { type: String, default: 'true' },
+		isDirector: { type: String, default: 'true' },
 	})
 )
 
