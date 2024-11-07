@@ -2,6 +2,7 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css'
+import apiUrl from '../../../config'
 
 const localizer = momentLocalizer(moment)
 
@@ -9,7 +10,7 @@ const Events = () => {
 	const [events, setEvents] = useState([])
 
 	const fetchEvents = async () => {
-		const response = await fetch('http://localhost:5000/getEvents')
+		const response = await fetch(`${apiUrl}/getEvents`)
 		const data = await response.json()
 		setEvents([...data])
 	}

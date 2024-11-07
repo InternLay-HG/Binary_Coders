@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import apiUrl from '../config'
 import Home from './components/Home'
 import Athlete from './pages/Athlete/AthletePage'
 import Coach from './pages/Coach/CoachPage'
@@ -16,7 +17,7 @@ const App = () => {
 	// get user data
 	useEffect(() => {
 		;(async () => {
-			const response = await fetch('http://localhost:5000/getuser', {
+			const response = await fetch(`${apiUrl}/getuser`, {
 				credentials: 'include',
 			})
 
@@ -38,9 +39,20 @@ const App = () => {
 					{user?.id && (
 						<>
 							<Route path='fan/*' element={<Fan />} />
-							<Route path='athlete/*' element={user.isAthlete === 'true' ? <Athlete /> : <Navigate to='/unauthorized' />} />
-							<Route path='coach/*' element={user.isCoach === 'true' ? <Coach /> : <Navigate to='/unauthorized' />} />
-							<Route path='director/*' element={user.isDirector === 'true' ? <Director /> : <Navigate to='/unauthorized' />} />
+							<Route
+								path='athlete/*'
+								element={user.isAthlete === 'true' ? <Athlete /> : <Navigate to='/unauthorized' />}
+							/>
+							<Route
+								path='coach/*'
+								element={user.isCoach === 'true' ? <Coach /> : <Navigate to='/unauthorized' />}
+							/>
+							<Route
+								path='director/*'
+								element={
+									user.isDirector === 'true' ? <Director /> : <Navigate to='/unauthorized' />
+								}
+							/>
 							<Route path='unauthorized/*' element={<Unauthorized />} />
 						</>
 					)}

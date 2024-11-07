@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import apiUrl from '../../../config'
 
 const Games = () => {
 	const [teams, setTeams] = useState([])
 
 	const fetchTeams = async () => {
-		const response = await fetch('http://localhost:5000/getTeams')
+		const response = await fetch(`${apiUrl}/getTeams`)
 		const data = await response.json()
 		setTeams([...data])
 	}

@@ -1,3 +1,4 @@
+import apiUrl from '../../config'
 import { useAuth } from '../App'
 
 function Home() {
@@ -7,7 +8,7 @@ function Home() {
 	function googleLogin(e) {
 		e.preventDefault()
 		const role = e.target.elements.role?.value
-		window.location.href = `http://localhost:5000/auth/google?role=${role}`
+		window.location.href = `${apiUrl}/auth/google?role=${role}`
 	}
 
 	return (

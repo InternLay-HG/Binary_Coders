@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import apiUrl from '../../../config'
 
 const Updates = () => {
 	const [updates, setUpdates] = useState([])
 
 	const fetchUpdates = async () => {
-		const response = await fetch('http://localhost:5000/getUpdates')
+		const response = await fetch(`${apiUrl}/getUpdates`)
 		const data = await response.json()
 		setUpdates([...data])
 	}
@@ -19,7 +20,7 @@ const Updates = () => {
 
 		console.log(title.value, content.value)
 
-		await fetch('http://localhost:5000/addUpdate', {
+		await fetch(`${apiUrl}/addUpdate`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({

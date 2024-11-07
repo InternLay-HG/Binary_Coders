@@ -5,13 +5,17 @@ import jwt from 'jsonwebtoken'
 import { users } from '../utils/mongo.js'
 
 const router = express.Router()
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, 'http://localhost:5000/auth/google/callback')
+const client = new OAuth2Client(
+	process.env.GOOGLE_CLIENT_ID,
+	process.env.GOOGLE_CLIENT_SECRET,
+	`${process.env.BACKEND_URL}/auth/google/callback`
+)
 
 // Route for Google OAuth Login
 router.get('/google', (req, res) => {
 	const authUrl = client.generateAuthUrl({
 		scope: ['profile', 'email'],
-		redirect_uri: `http://localhost:5000/auth/google/callback`,
+		redirect_uri: `${process.env.BACKEND_URL}/auth/google/callback`,
 		state: JSON.stringify({ role: req.query.role }),
 	})
 	res.redirect(authUrl)
@@ -98,7 +102,7 @@ router.get('/google/callback', async (req, res) => {
 
 		res.redirect(`${process.env.FRONTEND_URL}/`)
 	} catch (error) {
-		res.redirect('http://localhost:5000/google')
+		res.redirect(`${process.env.BACKEND_URL}/google`)
 	}
 })
 
