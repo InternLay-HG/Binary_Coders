@@ -3,7 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
-import { teams, updates, users } from './utils/mongo.js'
+import {events, teams, updates, users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
@@ -43,6 +43,10 @@ app.get('/getUpdates', async (req, res) => {
 app.get('/getTeams', async (req, res) => {
 	const allteams = await teams.find()
 	res.json(allteams)
+})
+app.get('/getEvents', async (req, res) => {
+	const allevents = await events.find()
+	res.json(allevents)
 })
 app.listen(5000, () => {
 	console.log('Server running on http://localhost:5000')
