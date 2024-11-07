@@ -53,4 +53,25 @@ const events = mongoose.model(
 	})
 )
 
-export { events, teams, updates, users }
+const budgets = mongoose.model(
+	'budgets',
+	new mongoose.Schema({
+		fund: Number,
+		coach: String,
+		transactionId: {
+			type: String,
+			default: '',
+		},
+		status: {
+			type: String,
+			default: 'pending',
+		},
+		date: {
+			type: Date,
+			default: Date.now,
+		},
+		description: String,
+	})
+)
+
+export { events, teams, updates, users, budgets }

@@ -15,12 +15,17 @@ const Updates = () => {
 
 	const addUpdate = async (e) => {
 		e.preventDefault()
-		const newUpdate = e.target.elements.newUpdate.value
+		const { title, content } = e.target.elements
+
+		console.log(title.value, content.value)
 
 		await fetch('http://localhost:5000/addUpdate', {
 			method: 'POST',
-			headers: { 'Content-Type': 'text/plain' },
-			body: newUpdate,
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				title: title.value,
+				content: content.value,
+			}),
 		})
 
 		fetchUpdates()
@@ -29,15 +34,23 @@ const Updates = () => {
 	return (
 		<>
 			<form onSubmit={addUpdate}>
-				<label>
-					<textarea id='newUpdate' placeholder='Add an update...' />
-				</label>
+				<input type='text' id='title' placeholder='post title' />
+				<br />
+				<textarea id='content' placeholder='Add an update...' />
 				<button>Go</button>
 			</form>
 
+			<h1>All updates:</h1>
+			<br />
+
 			{updates?.map((item, i) => (
 				<div key={i}>
-					{item.content}: {new Date(item.date).toLocaleDateString('en-CA')}
+					<p>
+						{item.title}: {new Date(item.date).toLocaleDateString('en-CA')}
+					</p>
+					{item.content}
+					<br />
+					<br />
 				</div>
 			))}
 		</>

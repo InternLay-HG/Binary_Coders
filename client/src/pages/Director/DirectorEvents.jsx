@@ -4,6 +4,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import '../../../node_modules/react-big-calendar/lib/css/react-big-calendar.css'
 
 const localizer = momentLocalizer(moment)
+
 const Events = () => {
 	const [events, setEvents] = useState([])
 
@@ -18,7 +19,7 @@ const Events = () => {
 	}, [])
 
 	const onSelectEvent = (event) => {
-		alert(`Selected event: ${event.title}`)
+		alert(`${event.title} \n${event.venue} \n${event.description}`)
 	}
 
 	return (

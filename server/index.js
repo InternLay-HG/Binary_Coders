@@ -3,7 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
-import { events, teams, updates, users } from './utils/mongo.js'
+import { budgets, events, teams, updates, users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
@@ -14,6 +14,7 @@ app.use(
 	})
 )
 app.use(express.text())
+app.use(express.json())
 
 app.use('/auth', authRoutes)
 
@@ -29,9 +30,10 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 })
 
 app.post('/addUpdate', async (req, res) => {
-	const newUpdate = req.body
-	console.log(newUpdate)
-	await updates.create({ text: newUpdate })
+	const { title, content } = req.body
+	console.log(title, content)
+
+	await updates.create({ title: title, content: content })
 	res.sendStatus(200)
 })
 
@@ -48,6 +50,11 @@ app.get('/getTeams', async (req, res) => {
 app.get('/getEvents', async (req, res) => {
 	const allevents = await events.find()
 	res.json(allevents)
+})
+
+app.get('/getbudgets', async (req, res) => {
+	const allBudgets = await budgets.find()
+	res.json(allBudgets)
 })
 
 app.listen(5000, () => {
