@@ -68,3 +68,5 @@ function rename(obj, old_key, new_key) {
 	obj[new_key] = obj[old_key]
 	delete obj[old_key]
 }
+
+//
