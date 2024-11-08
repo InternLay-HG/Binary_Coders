@@ -9,7 +9,7 @@ const illustrations = [
     require("../Assets/Image5.png"),
 ];
 
-const SignIn = () => {
+const Login = () => {
     const [currentIllustration, setCurrentIllustration] = useState(0);
 
     useEffect(() => {
@@ -38,6 +38,7 @@ const SignIn = () => {
                         <div className="relative w-full h-full">
                             <div className={`transition-all w-full h-full`}>
                                 <img
+                                    src={illustrations[currentIllustration]}
                                     alt="Illustration with Quote"
                                     className="min-w-full h-[75vh] object-cover"
                                 />
@@ -93,4 +94,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default Login;
