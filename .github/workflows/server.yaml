@@ -1,0 +1,18 @@
+# https://docs.render.com/deploy-hooks#using-with-github-actions
+
+on:
+  pull_request:
+  push:
+    branches: [shub]
+    paths: ['server/**']
+
+jobs:
+  client-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Server
+        env:
+          deploy_url: 'https://api.render.com/deploy/srv-csmdvsogph6c73ah4170?key=lWjFzzcTuT0'
+        run: |
+          curl "$deploy_url"
