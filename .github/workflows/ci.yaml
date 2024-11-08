@@ -1,46 +1,29 @@
 # https://docs.render.com/deploy-hooks#using-with-github-actions
 
 on:
-  push:
-    branches:
-      - shub
-    paths:
-      - 'client/**' 
   pull_request:
-    branches:
-      - shub
-    paths:
-      - 'client/**'
   push:
-    branches:
-      - shub
-    paths:
-      - 'server/**'  
-  pull_request:
-    branches:
-      - shub
-    paths:
-      - 'server/**'  
+    branches: [main]
 
 jobs:
   client-deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'shub' || github.event.ref == 'refs/heads/shub'
+    # if: github.event.pull_request.head.ref == 'shub' || github.event.ref == 'refs/heads/shub'
     steps:
       - uses: actions/checkout@v3
       - name: Deploy Client
         env:
           deploy_url: 'https://api.render.com/deploy/srv-csmdt4dumphs73cn56fg?key=hQM9SmtDO08'
         run: |
-          curl "$deploy_url"
+          curl "hi"
 
-  server-deploy:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'shub' || github.event.ref == 'refs/heads/shub'
-    steps:
-      - uses: actions/checkout@v3
-      - name: Deploy Server
-        env:
-          deploy_url: 'https://api.render.com/deploy/srv-csmdvsogph6c73ah4170?key=lWjFzzcTuT0'
-        run: |
-          curl "$deploy_url"
+  # server-deploy:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.pull_request.head.ref == 'shub' || github.event.ref == 'refs/heads/shub'
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Deploy Server
+  #       env:
+  #         deploy_url: 'https://api.render.com/deploy/srv-csmdvsogph6c73ah4170?key=lWjFzzcTuT0'
+  #       run: |
+  #         curl "$deploy_url"
