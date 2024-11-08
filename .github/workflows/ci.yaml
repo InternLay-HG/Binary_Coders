@@ -1,16 +1,26 @@
 # https://docs.render.com/deploy-hooks#using-with-github-actions
 
 on:
-  [push, pull_request]:
+  push:
     branches:
       - shub
     paths:
-      - 'client/**' # Trigger for client
-  [push, pull_request]:
+      - 'client/**' 
+  pull_request:
     branches:
       - shub
     paths:
-      - 'server/**' # Trigger for server
+      - 'client/**'
+  push:
+    branches:
+      - shub
+    paths:
+      - 'server/**'  
+  pull_request:
+    branches:
+      - shub
+    paths:
+      - 'server/**'  
 
 jobs:
   client-deploy:
