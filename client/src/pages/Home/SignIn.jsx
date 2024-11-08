@@ -37,12 +37,9 @@ const SignIn = () => {
 					<div className='lg:w-1/3 w-full p-4 lg:p-0 hidden lg:flex lg:flex-col items-center justify-center h-[75vh]'>
 						<div className='relative w-full h-full'>
 							<div className={`transition-all w-full h-full`}>
-								<img alt='Illustration with Quote' className='min-w-full h-[75vh] object-cover' />
+								<img src={illustrations[currentIllustration]} alt='Illustration with Quote' className='min-w-full h-[75vh] object-cover' />
 							</div>
-							<a
-								href='#signup'
-								className='absolute bottom-6 left-1/2 transform -translate-x-1/2 z-200'
-							>
+							<a href='#signup' className='absolute bottom-6 left-1/2 transform -translate-x-1/2 z-200'>
 								<button className='border-solid border-4 border-blue-950 py-2 px-4 bg-gradient-to-r from-sky-500 to-blue-600 text-blue-950 font-bold rounded-lg hover:opacity-90 transition duration-200'>
 									Register
 								</button>
@@ -51,10 +48,7 @@ const SignIn = () => {
 					</div>
 					<div className='lg:w-2/3 w-full p-12 flex flex-col items-center justify-center'>
 						<h1 className='text-3xl lg:text-5xl font-bold mb-8 text-center text-white'>Login</h1>
-						<h3
-							style={{ fontFamily: 'Pacifico, cursive' }}
-							className='text-orange-500 text-2xl lg:text-4xl'
-						>
+						<h3 style={{ fontFamily: 'Pacifico, cursive' }} className='text-orange-500 text-2xl lg:text-4xl'>
 							Welcome Back
 						</h3>
 						<div className='flex space-x-10 my-6'>
