@@ -3,7 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
-import { users } from './utils/mongo.js'
+import { budgets, events, teams, updates, users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
@@ -13,6 +13,10 @@ app.use(
 		credentials: true,
 	})
 )
+app.use(express.text())
+app.use(express.json())
+
+const port = process.env.PORT || 5000
 
 app.use('/auth', authRoutes)
 
@@ -24,14 +28,45 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 
 	user = { ...user._doc }
 	rename(user, '_id', 'id')
+	console.log(user)
 	res.json(user)
 })
 
-app.listen(5000, () => {
-	console.log('Server running on http://localhost:5000')
+app.post('/addUpdate', async (req, res) => {
+	const { title, content } = req.body
+	console.log(title, content)
+
+	await updates.create({ title: title, content: content })
+	res.sendStatus(200)
+})
+
+app.get('/getUpdates', async (req, res) => {
+	const allUpdates = await updates.find()
+	res.json(allUpdates)
+})
+
+app.get('/getTeams', async (req, res) => {
+	const allteams = await teams.find()
+	res.json(allteams)
+})
+
+app.get('/getEvents', async (req, res) => {
+	const allevents = await events.find()
+	res.json(allevents)
+})
+
+app.get('/getbudgets', async (req, res) => {
+	const allBudgets = await budgets.find()
+	res.json(allBudgets)
+})
+
+app.listen(port, () => {
+	console.log(`Server running on http://localhost:${port}`)
 })
 
 function rename(obj, old_key, new_key) {
 	obj[new_key] = obj[old_key]
 	delete obj[old_key]
 }
+
+//

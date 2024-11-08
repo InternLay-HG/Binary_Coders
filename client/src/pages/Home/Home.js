@@ -1,4 +1,6 @@
-import { useAuth } from '../App'
+import { NavLink } from 'react-router-dom'
+import apiUrl from '../../../config'
+import { useAuth } from '../../App'
 
 function Home() {
 	const user = useAuth()
@@ -7,12 +9,40 @@ function Home() {
 	function googleLogin(e) {
 		e.preventDefault()
 		const role = e.target.elements.role?.value
-		window.location.href = `http://localhost:5000/auth/google?role=${role}`
+		window.location.href = `${apiUrl}/auth/google?role=${role}`
 	}
 
 	return (
 		<>
-			<h1>Dashboard</h1>
+			<h1>Landing page</h1>
+			<nav>
+				<ul>
+					<li>
+						<NavLink to='/' exact>
+							Home
+						</NavLink>
+					</li>
+					<li>
+						<NavLink to='/login'>Login</NavLink>
+					</li>
+					<li>
+						<NavLink to='/register'>Register</NavLink>
+					</li>
+					<li>
+						<NavLink to='/fan'>Fan</NavLink>
+					</li>
+					<li>
+						<NavLink to='/athlete'>Athlete</NavLink>
+					</li>
+					<li>
+						<NavLink to='/coach'>Coach</NavLink>
+					</li>
+					<li>
+						<NavLink to='/director'>Director</NavLink>
+					</li>
+				</ul>
+			</nav>
+
 			<form onSubmit={googleLogin}>
 				<div>
 					<input type='radio' id='fan' value='fan' name='role' defaultChecked />

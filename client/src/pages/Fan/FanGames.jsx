@@ -1,12 +1,7 @@
 import React from 'react'
 
 const Games = () => {
-  return (
-    <>
-    
-     pages
-    </>
-  );
+	return <>pages</>
 }
 
 export default Games

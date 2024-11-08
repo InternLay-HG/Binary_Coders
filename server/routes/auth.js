@@ -8,16 +8,17 @@ const router = express.Router()
 const client = new OAuth2Client(
 	process.env.GOOGLE_CLIENT_ID,
 	process.env.GOOGLE_CLIENT_SECRET,
-	'http://localhost:5000/auth/google/callback'
+	`${process.env.BACKEND_URL}/auth/google/callback`
 )
 
 // Route for Google OAuth Login
 router.get('/google', (req, res) => {
 	const authUrl = client.generateAuthUrl({
 		scope: ['profile', 'email'],
-		redirect_uri: `http://localhost:5000/auth/google/callback`,
+		redirect_uri: `${process.env.BACKEND_URL}/auth/google/callback`,
 		state: JSON.stringify({ role: req.query.role }),
 	})
+
 	res.redirect(authUrl)
 })
 
@@ -80,7 +81,6 @@ router.get('/google/callback', async (req, res) => {
 			}
 		}
 		await user.save()
-		console.log(user)
 
 		// Generate JWT token for the user
 		const token = jwt.sign(
@@ -94,15 +94,17 @@ router.get('/google/callback', async (req, res) => {
 
 		// Set JWT token as an HTTP-only cookie
 		res.cookie('jwt', token, {
-			httpOnly: true,
-			secure: false,
-			sameSite: 'strict',
+			httpOnly: process.env.IS_LOCAL !== 'true',
+			secure: true,
+			sameSite: 'none',
+			maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
 		})
+
+		console.log('logged user in:', user.name)
 
 		res.redirect(`${process.env.FRONTEND_URL}/`)
 	} catch (error) {
-		console.error('Error during Google authentication:', error)
-		res.status(500).json({ error: 'Internal Server Error' })
+		res.redirect(`${process.env.BACKEND_URL}/google`)
 	}
 })
 
@@ -112,9 +114,8 @@ function authenticateJWT(req, res, next) {
 
 	if (token) {
 		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-			console.log(user)
-
 			if (err) return res.status(403).json({ message: 'Invalid token' })
+
 			req.id = user.id
 			next()
 		})

@@ -7,13 +7,9 @@ import DirectorGames from './DirectorGames'
 import DirectorUpdates from './DirectorUpdates'
 const SportDirectorPage = () => {
 	useEffect(() => {
-		const userMenuButton = document.querySelector(
-			'[data-dropdown-toggle="dropdown-user"]'
-		)
+		const userMenuButton = document.querySelector('[data-dropdown-toggle="dropdown-user"]')
 		const userDropdown = document.getElementById('dropdown-user')
-		const sidebarToggle = document.querySelector(
-			'[data-drawer-toggle="logo-sidebar"]'
-		)
+		const sidebarToggle = document.querySelector('[data-drawer-toggle="logo-sidebar"]')
 		const sidebar = document.getElementById('logo-sidebar')
 
 		// User dropdown toggle
@@ -86,17 +82,14 @@ const SportDirectorPage = () => {
 									</button>
 								</div>
 								<div
-									className='z-50 right-0 top-14 absolute hidden  text-base list-none bg-white divide-y divide-gray-100 rounded shadow '
+									className='z-50 right-0 top-14 absolute hidden    text-base list-none bg-white divide-y divide-gray-100 rounded shadow '
 									id='dropdown-user'
 								>
 									<div className='px-4 py-3' role='none'>
 										<p className='text-sm text-gray-900 ' role='none'>
 											Neil Sims
 										</p>
-										<p
-											className='text-sm font-medium text-gray-900 truncate '
-											role='none'
-										>
+										<p className='text-sm font-medium text-gray-900 truncate ' role='none'>
 											neil.sims@flowbite.com
 										</p>
 									</div>
@@ -118,10 +111,7 @@ const SportDirectorPage = () => {
 				<div className='h-full px-3 pb-4 overflow-y-auto bg-white '>
 					<ul className='space-y-2 font-medium'>
 						<li>
-							<Link
-								className='flex items-center p-2 text-gray-900 rounded-lg '
-								to='events'
-							>
+							<Link className='flex items-center p-2 text-gray-900 rounded-lg ' to='events'>
 								<span className='flex-1 ms-3 whitespace-nowrap'>Events</span>
 							</Link>
 						</li>
@@ -152,7 +142,7 @@ const SportDirectorPage = () => {
 					</ul>
 				</div>
 			</aside>
-			<div className='mt-16  sm:ml-64 sm:mt-14'>
+			<div className='mt-16    sm:ml-64 sm:mt-14'>
 				{/* Nested route*/}
 				<Routes>
 					<Route path='/' element={<Navigate replace to='events' />} />
