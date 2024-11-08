@@ -1,9 +1,7 @@
 import React from 'react'
 
 const CoachMembers = () => {
-  return (
-    <div>CoachMembers</div>
-  )
+	return <div>CoachMembers</div>
 }
 
 export default CoachMembers

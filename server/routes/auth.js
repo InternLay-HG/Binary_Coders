@@ -94,7 +94,7 @@ router.get('/google/callback', async (req, res) => {
 
 		// Set JWT token as an HTTP-only cookie
 		res.cookie('jwt', token, {
-			httpOnly: true,
+			httpOnly: process.env.IS_LOCAL !== 'true',
 			secure: true,
 			sameSite: 'none',
 			maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -110,10 +110,7 @@ router.get('/google/callback', async (req, res) => {
 
 // Middleware to protect routes
 function authenticateJWT(req, res, next) {
-	console.log('in auth')
-
 	const token = req.cookies.jwt
-	console.log(token)
 
 	if (token) {
 		jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

@@ -23,10 +23,10 @@ const Budgets = () => {
 
 	return (
 		<div>
-			<div className='fixed inline-block  align-middle  w-full  bg-zinc-300 '>
+			<div className='fixed inline-block    align-middle    w-full    bg-zinc-300 '>
 				<ul className=' flex font-medium '>
 					<li>
-						<Link className='flex items-center  text-gray-900 rounded-lg ' to='pending'>
+						<Link className='flex items-center    text-gray-900 rounded-lg ' to='pending'>
 							<span className=' ms-3 whitespace-nowrap'>Pending</span>
 						</Link>
 					</li>
@@ -42,7 +42,7 @@ const Budgets = () => {
 					</li>
 				</ul>
 			</div>
-			<div className='absolute  mt-8 ml-3'>
+			<div className='absolute    mt-8 ml-3'>
 				<Routes>
 					<Route path='/' element={<Navigate replace to='pending' />} />
 					<Route path='pending' element={<Budget budgets={budgets?.pending} />} />

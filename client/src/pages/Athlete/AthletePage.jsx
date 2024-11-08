@@ -1,6 +1,6 @@
 // src/pages/AthletePage.js
 import React, { useEffect } from 'react'
-import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import AthleteHealth from './AthleteHealth'
 import AthletePerformance from './AthletePerformance'
 import Athleteprofile from './AthleteProfile'
@@ -8,13 +8,9 @@ import AthleteTraining from './AthleteTraining'
 import AthleteUpdates from './AthleteUpdates'
 const AthletePage = () => {
 	useEffect(() => {
-		const userMenuButton = document.querySelector(
-			'[data-dropdown-toggle="dropdown-user"]'
-		)
+		const userMenuButton = document.querySelector('[data-dropdown-toggle="dropdown-user"]')
 		const userDropdown = document.getElementById('dropdown-user')
-		const sidebarToggle = document.querySelector(
-			'[data-drawer-toggle="logo-sidebar"]'
-		)
+		const sidebarToggle = document.querySelector('[data-drawer-toggle="logo-sidebar"]')
 		const sidebar = document.getElementById('logo-sidebar')
 
 		// User dropdown toggle
@@ -88,17 +84,14 @@ const AthletePage = () => {
 										</button>
 									</div>
 									<div
-										className='z-50 right-0 top-14 absolute hidden  text-base list-none bg-white divide-y divide-gray-100 rounded shadow '
+										className='z-50 right-0 top-14 absolute hidden    text-base list-none bg-white divide-y divide-gray-100 rounded shadow '
 										id='dropdown-user'
 									>
 										<div className='px-4 py-3' role='none'>
 											<p className='text-sm text-gray-900 ' role='none'>
 												Neil Sims
 											</p>
-											<p
-												className='text-sm font-medium text-gray-900 truncate '
-												role='none'
-											>
+											<p className='text-sm font-medium text-gray-900 truncate ' role='none'>
 												neil.sims@flowbite.com
 											</p>
 										</div>
@@ -120,10 +113,7 @@ const AthletePage = () => {
 					<div className='h-full px-3 pb-4 overflow-y-auto bg-white '>
 						<ul className='space-y-2 font-medium'>
 							<li>
-								<Link
-									className='flex items-center p-2 text-gray-900 rounded-lg '
-									to='health'
-								>
+								<Link className='flex items-center p-2 text-gray-900 rounded-lg ' to='health'>
 									<span className='flex-1 ms-3 whitespace-nowrap'>Health</span>
 								</Link>
 							</li>
@@ -140,9 +130,7 @@ const AthletePage = () => {
 									className='className="flex items-center p-2 text-gray-900 rounded-lg "'
 									to='training'
 								>
-									<span className='flex-1 ms-3 whitespace-nowrap'>
-										Training
-									</span>
+									<span className='flex-1 ms-3 whitespace-nowrap'>Training</span>
 								</Link>
 							</li>
 							<li>
@@ -150,9 +138,7 @@ const AthletePage = () => {
 									className='className="flex items-center p-2 text-gray-900 rounded-lg "'
 									to='performance'
 								>
-									<span className='flex-1 ms-3 whitespace-nowrap'>
-										Performance
-									</span>
+									<span className='flex-1 ms-3 whitespace-nowrap'>Performance</span>
 								</Link>
 							</li>
 							<li>
@@ -166,7 +152,7 @@ const AthletePage = () => {
 						</ul>
 					</div>
 				</aside>
-				<div className='mt-16  sm:ml-64 sm:mt-14'>
+				<div className='mt-16    sm:ml-64 sm:mt-14'>
 					{/* Nested route*/}
 					<Routes>
 						<Route path='/' element={<Navigate replace to='updates' />} />

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { FaFacebookF, FaGithub, FaGoogle } from 'react-icons/fa'
 
-const illustrations = [
-	require('../Assets/Image1.png'),
-	require('../Assets/Image2.png'),
-	require('../Assets/Image3.png'),
-	require('../Assets/Image4.png'),
-	require('../Assets/Image5.png'),
-]
+import Image1 from '../../Assets/Image1.png'
+import Image2 from '../../Assets/Image2.png'
+import Image3 from '../../Assets/Image3.png'
+import Image4 from '../../Assets/Image4.png'
+import Image5 from '../../Assets/Image5.png'
+
+const illustrations = [Image1, Image2, Image3, Image4, Image5]
 
 const SignIn = () => {
 	const [currentIllustration, setCurrentIllustration] = useState(0)
@@ -37,10 +37,7 @@ const SignIn = () => {
 					<div className='lg:w-1/3 w-full p-4 lg:p-0 hidden lg:flex lg:flex-col items-center justify-center h-[75vh]'>
 						<div className='relative w-full h-full'>
 							<div className={`transition-all w-full h-full`}>
-								<img
-									alt='Illustration with Quote'
-									className='min-w-full h-[75vh] object-cover'
-								/>
+								<img alt='Illustration with Quote' className='min-w-full h-[75vh] object-cover' />
 							</div>
 							<a
 								href='#signup'
@@ -53,9 +50,7 @@ const SignIn = () => {
 						</div>
 					</div>
 					<div className='lg:w-2/3 w-full p-12 flex flex-col items-center justify-center'>
-						<h1 className='text-3xl lg:text-5xl font-bold mb-8 text-center text-white'>
-							Login
-						</h1>
+						<h1 className='text-3xl lg:text-5xl font-bold mb-8 text-center text-white'>Login</h1>
 						<h3
 							style={{ fontFamily: 'Pacifico, cursive' }}
 							className='text-orange-500 text-2xl lg:text-4xl'
@@ -75,9 +70,7 @@ const SignIn = () => {
 								placeholder='Email'
 								className='w-full h-8 md:h-10 px-3 py-1.5 rounded-lg bg-white bg-opacity-25 placeholder-white text-white focus:bg-opacity-40 focus:outline-none transition duration-200'
 							/>
-							<label className='text-sm font-semibold text-white'>
-								Password
-							</label>
+							<label className='text-sm font-semibold text-white'>Password</label>
 							<input
 								type='password'
 								placeholder='Password'
