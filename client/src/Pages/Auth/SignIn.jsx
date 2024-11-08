@@ -9,7 +9,7 @@ const illustrations = [
     require("../Assets/Image5.png"),
 ];
 
-const Login = () => {
+const SignIn = () => {
     const [currentIllustration, setCurrentIllustration] = useState(0);
 
     useEffect(() => {
@@ -94,4 +94,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignIn;
