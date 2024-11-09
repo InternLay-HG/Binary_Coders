@@ -5,11 +5,7 @@ import jwt from 'jsonwebtoken'
 import { users } from '../utils/mongo.js'
 
 const router = express.Router()
-const client = new OAuth2Client(
-	process.env.GOOGLE_CLIENT_ID,
-	process.env.GOOGLE_CLIENT_SECRET,
-	`${process.env.BACKEND_URL}/auth/google/callback`
-)
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, `${process.env.BACKEND_URL}/auth/google/callback`)
 
 // Route for Google OAuth Login
 router.get('/google', (req, res) => {
@@ -17,6 +13,7 @@ router.get('/google', (req, res) => {
 		scope: ['profile', 'email'],
 		redirect_uri: `${process.env.BACKEND_URL}/auth/google/callback`,
 		state: JSON.stringify({ role: req.query.role }),
+		hd: 'iiitranchi.ac.in',
 	})
 
 	res.redirect(authUrl)
@@ -37,11 +34,6 @@ router.get('/google/callback', async (req, res) => {
 			})
 		).getPayload()
 
-		// only for iiit ranchi users
-		if (!isValidEmailDomain(payload.email)) {
-			return res.status(403).send('Only users from IIIT Ranchi can sign in')
-		}
-
 		let user = await users.findById(payload.sub)
 
 		if (!user) {
@@ -52,41 +44,41 @@ router.get('/google/callback', async (req, res) => {
 				email: payload.email,
 				picture: payload.picture,
 			})
+			await user.save()
 		}
 
-		let setRole
-
-		if (role == 'fan') {
-			setRole = 'fan'
-		} else if (role == 'player') {
-			if (user.isPlayer === 'true') {
-				setRole = 'player'
-			} else {
-				setRole = 'player_pending'
-				user.picture = 'requested'
-			}
-		} else if (role == 'coach') {
-			if (user.isCoach === 'true') {
-				setRole = 'coach'
-			} else {
-				setRole = 'coach_pending'
-				user.isCoach = 'requested'
-			}
-		} else if (role == 'admin') {
-			if (user.isAdmin === 'true') {
-				setRole = 'admin'
-			} else {
-				setRole = 'admin_pending'
-				user.isAdmin = 'requested'
-			}
-		}
-		await user.save()
+		// 🤮🤮🤮
+		// let setRole
+		// if (role == 'fan') {
+		// 	setRole = 'fan'
+		// } else if (role == 'player') {
+		// 	if (user.isPlayer === 'true') {
+		// 		setRole = 'player'
+		// 	} else {
+		// 		setRole = 'player_pending'
+		// 		user.picture = 'requested'
+		// 	}
+		// } else if (role == 'coach') {
+		// 	if (user.isCoach === 'true') {
+		// 		setRole = 'coach'
+		// 	} else {
+		// 		setRole = 'coach_pending'
+		// 		user.isCoach = 'requested'
+		// 	}
+		// } else if (role == 'admin') {
+		// 	if (user.isAdmin === 'true') {
+		// 		setRole = 'admin'
+		// 	} else {
+		// 		setRole = 'admin_pending'
+		// 		user.isAdmin = 'requested'
+		// 	}
+		// }
 
 		// Generate JWT token for the user
 		const token = jwt.sign(
 			{
 				id: payload.sub,
-				role: setRole,
+				// role: setRole,
 			},
 			process.env.JWT_SECRET,
 			{ expiresIn: '30d' }
@@ -108,6 +100,50 @@ router.get('/google/callback', async (req, res) => {
 	}
 })
 
+// Google Onetap Route
+router.post('/google-one-tap', async (req, res) => {
+	try {
+		const { credential } = req.body
+
+		const payload = (
+			await client.verifyIdToken({
+				idToken: credential,
+				audience: process.env.GOOGLE_CLIENT_ID,
+			})
+		).getPayload()
+
+		let user = await users.findById(payload.sub)
+
+		if (!user) {
+			// Add new user record in db
+			user = await users.create({
+				_id: payload.sub,
+				name: payload.name,
+				email: payload.email,
+				picture: payload.picture,
+			})
+
+			await user.save()
+		}
+
+		// Generate JWT token for the user
+		const token = jwt.sign({ id: payload.sub }, process.env.JWT_SECRET, { expiresIn: '30d' })
+
+		// Set JWT token as an HTTP-only cookie
+		res.cookie('jwt', token, {
+			httpOnly: process.env.IS_LOCAL !== 'true',
+			secure: true,
+			sameSite: 'none',
+			maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+		})
+
+		console.log('logged user in:', user.name)
+		res.send()
+	} catch (error) {
+		res.redirect(`${process.env.BACKEND_URL}/google`)
+	}
+})
+
 // Middleware to protect routes
 function authenticateJWT(req, res, next) {
 	const token = req.cookies.jwt
@@ -122,10 +158,6 @@ function authenticateJWT(req, res, next) {
 	} else {
 		res.status(401).json({ message: 'Plz login' })
 	}
-}
-
-function isValidEmailDomain(email) {
-	return email.split('@')[1].split('.')[0] === 'iiitranchi'
 }
 
 export { authenticateJWT, router as default }

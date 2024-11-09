@@ -3,18 +3,15 @@
 const labelsClasses = ['indigo', 'gray', 'green', 'blue', 'red', 'purple']
 
 export default {
-	purge: {
-		content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-		safelist: [...labelsClasses.map((lbl) => `bg-${lbl}-500`), ...labelsClasses.map((lbl) => `bg-${lbl}-200`), ...labelsClasses.map((lbl) => `text-${lbl}-400`)],
-	},
-	content: ['./src/**/*.{js,jsx,ts,tsx}'],
+	content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+	safelist: [...labelsClasses.map((lbl) => `bg-${lbl}-500`), ...labelsClasses.map((lbl) => `bg-${lbl}-200`), ...labelsClasses.map((lbl) => `text-${lbl}-400`)],
 	theme: {
 		extend: {
 			colors: {
 				blobBlue: '#0085FF',
 				blobLightBlue: '#0EAFFF',
 				blobSkyBlue: '#26C3F9',
-				blobTeal: '#4EAEFF',
+				blobTeal: '#4EAFFF',
 			},
 			keyframes: {
 				transform: {
@@ -38,10 +35,10 @@ export default {
 				movement_two: 'movement_two 6s ease-in-out infinite',
 			},
 		},
-		plugins: [],
 	},
-	// 	plugins: [],
-	// 	// corePlugins: {
-	// 	// 	preflight: false,
-	// 	// },
+	plugins: [],
 }
+// 	plugins: [],
+// 	// corePlugins: {
+// 	// 	preflight: false,
+// 	// },

@@ -2,30 +2,30 @@
 
 Clone the repo and open my branch.
 
-In vscode, open two terminals:
+Install the necesarry packages:
 
-In the first terminal, navigate to the server directory and start the server:
+    npm ci --prefix client ; npm ci --prefix server
 
-    cd server
-    npm i
-
-Then create a `.env` file with the following:
+In `server` folder create a `.env` file with the following:
 
     GOOGLE_CLIENT_ID=
     GOOGLE_CLIENT_SECRET=
     JWT_SECRET=
-    FRONTEND_URL=
-    MONGO_URI=
+    FRONTEND_URL=http://localhost:3000
+    BACKEND_URL=http://localhost:5000
+    MONGO_URI=mongodb+srv://champa281982:sDTErVBBl2QNTjQ6@cluster0.4psoj.mongodb.net/Sports_management?retryWrites=true&w=majority
+    PORT=5000
+    IS_LOCAL=true
 
-Then start the server:
+Then open 2 terminals and start the server client separately:
 
-    npm start
+In first terminal,
 
-In the second terminal, navigate to the client directory and start the client:
+    npm start --prefix client
 
-    cd client
-    npm i
-    npm start
+In second terminal,
+
+    npm run dev --prefix server
 
 Then go to `http://localhost:3000`
 

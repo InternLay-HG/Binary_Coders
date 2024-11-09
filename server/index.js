@@ -28,13 +28,11 @@ app.get('/getuser', authenticateJWT, async (req, res) => {
 
 	user = { ...user._doc }
 	rename(user, '_id', 'id')
-	console.log(user)
 	res.json(user)
 })
 
 app.post('/addUpdate', async (req, res) => {
 	const { title, content } = req.body
-	console.log(title, content)
 
 	await updates.create({ title: title, content: content })
 	res.sendStatus(200)

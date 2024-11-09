@@ -8,9 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@vitejs/plugin-react": "^4.3.3",
     "axios": "^1.7.7",
     "firebase": "^11.0.1",
+    "google-one-tap": "^1.0.6",
     "moment": "^2.30.1",
     "react": "^18.3.1",
     "react-big-calendar": "^1.15.0",
