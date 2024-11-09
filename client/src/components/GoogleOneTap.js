@@ -19,7 +19,7 @@ function GoogleOneTap({ setIsLoggedIn }) {
 					console.log('Login Failed')
 				}}
 				useOneTap
-				auto_select
+				// auto_select
 				hosted_domain='iiitranchi.ac.in'
 			/>
 		</div>
