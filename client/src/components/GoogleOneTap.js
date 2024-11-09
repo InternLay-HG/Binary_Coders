@@ -3,9 +3,8 @@ import apiUrl from '../../config'
 
 function GoogleOneTap({ setIsLoggedIn }) {
 	return (
-		<div class='invisible '>
+		<div className='invisible '>
 			<GoogleLogin
-				class='invisible '
 				onSuccess={async (response) => {
 					await fetch(`${apiUrl}/auth/google-one-tap`, {
 						method: 'POST',
