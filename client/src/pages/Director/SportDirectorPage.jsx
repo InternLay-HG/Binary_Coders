@@ -5,6 +5,7 @@ import DirectorBudgets from './DirectorBudgets'
 import DirectorEvents from './DirectorEvents'
 import DirectorGames from './DirectorGames'
 import DirectorUpdates from './DirectorUpdates'
+import DirNavbar from './DirectorNavbar'
 const SportDirectorPage = () => {
 	useEffect(() => {
 		const userMenuButton = document.querySelector(
@@ -36,7 +37,7 @@ const SportDirectorPage = () => {
 	}, [])
 	return (
 		<div className='static'>
-			<nav className='fixed top-0 z-50 w-full bg-cyan-800  '>
+			{/* <nav className='fixed top-0 z-50 w-full bg-cyan-800  '>
 				<div className='px-3 py-3 lg:px-5 lg:pl-3'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center justify-start rtl:justify-end'>
@@ -151,7 +152,8 @@ const SportDirectorPage = () => {
 						</li>
 					</ul>
 				</div>
-			</aside>
+			</aside> */}
+			<DirNavbar/>
 			<div className='mt-16  sm:ml-64 sm:mt-14'>
 				{/* Nested route*/}
 				<Routes>

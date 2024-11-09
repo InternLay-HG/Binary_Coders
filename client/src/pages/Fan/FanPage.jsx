@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import FanEvents from './FanEvents'
 import FanGames from './FanGames'
+import Navbar from './FanNavbar'
 
 const FanPage = () => {
 	useEffect(() => {
@@ -34,8 +35,8 @@ const FanPage = () => {
 	}, [])
 
 	return (
-		<div className='static'>
-			<nav className='fixed top-0 z-50 w-full bg-white border-b border-gray-200 '>
+		<div >
+			{/* <nav className='fixed top-0 z-50 w-full bg-white border-b border-gray-200 '>
 				<div className='px-3 py-3 lg:px-5 lg:pl-3'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center justify-start rtl:justify-end'>
@@ -107,9 +108,9 @@ const FanPage = () => {
 						</div>
 					</div>
 				</div>
-			</nav>
-
-			<aside
+			</nav> */}
+            <Navbar/>
+			{/* <aside
 				id='logo-sidebar'
 				className='fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0'
 				aria-label='Sidebar'
@@ -134,7 +135,7 @@ const FanPage = () => {
 						</li>
 					</ul>
 				</div>
-			</aside>
+			</aside> */}
 			<div className='mt-14 p-4 sm:ml-64 '>
 				<Routes>
 					<Route path='/' element={<Navigate replace to='events' />} />
