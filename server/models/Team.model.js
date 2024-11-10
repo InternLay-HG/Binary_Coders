@@ -4,7 +4,7 @@ const teamSchema = new Schema({
    sport: { type: String, required: true },
    athletes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Athlete' }],
    captain:{type:Schema.Types.ObjectId,ref:'Athlete'},
-   // coaches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Coach' }],
+   coaches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Coach' }],
    schedule: [
       {
         eventTitle: { type: String, required: true },  // e.g., "Quarter-Finals", "Practice Session"

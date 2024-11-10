@@ -7,13 +7,6 @@ const userSchema = new Schema({
     required:true,
     trim:true,
     } ,
-    // isVerified:{
-    // type:Boolean,
-    // default:false
-    // },
-    // verificationcode:{
-    //   type:String,
-    // },
     email: {
     type:String,
     required:true,
@@ -26,20 +19,20 @@ const userSchema = new Schema({
       type:String,
    },
    isAthlete:{
-    type:Boolean,
-    default:false,
+    type:String,
+    default:"False",
    },
    isCoach:{
-    type:Boolean,
-    default:false,
+    type:String, 
+    default:"False",
    },
    isAdmin:{
-    type:Boolean,
-    default:false,
+    type:String,
+    default:"False",
    },
    isFan:{
-    type:Boolean,
-    default:false,
+    type:String,
+    default:"True",
    },
    refreshToken:{
       type:String

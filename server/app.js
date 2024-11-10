@@ -13,9 +13,11 @@ app.use(cookieParser())
 app.use(express.json());
 
 import UserRouter from "./Routes/user.route.js";
-import authRoutes from "./Routes/auth.route.js"
+import authRoutes from "./Routes/auth.route.js";
+import CoachRoutes from "./Routes/couch.route.js";
 app.use("/api/v1/users",UserRouter)
 app.use("/auth",authRoutes)
+app.use("/api/v1/coaches",CoachRoutes)
 
 
 export {app}

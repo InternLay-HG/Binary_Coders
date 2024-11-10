@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import { type } from "os";
 const CoachSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
