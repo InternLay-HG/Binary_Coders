@@ -1,42 +1,21 @@
-import { useEffect, useState } from 'react'
-import apiUrl from '../../../config'
+import React from 'react';
+import { Route, Routes, Outlet } from 'react-router-dom';
+import TeamDetails from './TeamDetails';
+import Gameslist from "./Gameslist";
 
 const Games = () => {
-	const [teams, setTeams] = useState([])
+  return (
+    <div className='bg-gray-500 min-h-screen'>
+      <div className="pt-5 mt-16 sm:mt-14">
+        <Routes>
+          <Route path="/" element={<Gameslist />} />
+          <Route path="games" element={<Gameslist />} />
+          <Route path="team" element={<TeamDetails />} />
+        </Routes>
+        <Outlet />
+      </div>
+    </div>
+  );
+};
 
-	const fetchTeams = async () => {
-		const response = await fetch(`${apiUrl}/getTeams`)
-		const data = await response.json()
-		setTeams([...data])
-	}
-
-	useEffect(() => {
-		fetchTeams()
-	}, [])
-
-	return (
-		<>
-			<h1>All Teams</h1>
-			{teams?.map((team, i) => (
-				<TeamDetails team={team} key={i} />
-			))}
-		</>
-	)
-}
-
-const TeamDetails = ({ team }) => {
-	return (
-		<div>
-			<h1>{team.teamName}</h1>
-			{team.sport} . {team.coach}
-			<h3>Players:</h3>
-			<strong>{team.captain}</strong>
-			{team.players.map((player, index) => (
-				<p key={index}>{player}</p>
-			))}
-			<br />
-		</div>
-	)
-}
-
-export default Games
+export default Games;

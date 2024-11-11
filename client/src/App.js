@@ -53,7 +53,7 @@ const App = () => {
 						/>
 						<Route
 							path='director/*'
-							element={user?.isDirector === 'true' ? <Director /> : <Navigate to='/unauthorized' />}
+							element=<Director /> 
 						/>
 						<Route path='unauthorized/*' element={<Unauthorized />} />
 					</>

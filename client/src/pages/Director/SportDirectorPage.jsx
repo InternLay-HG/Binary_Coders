@@ -147,7 +147,7 @@ const SportDirectorPage = () => {
 				<Routes>
 					<Route path='/' element={<Navigate replace to='events' />} />
 					<Route path='events/*' element={<DirectorEvents />} />
-					<Route path='games' element={<DirectorGames />} />
+					<Route path='games/*' element={<DirectorGames />} />
 					<Route path='budgets/*' element={<DirectorBudgets />} />
 					<Route path='updates' element={<DirectorUpdates />} />
 				</Routes>

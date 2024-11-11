@@ -24,16 +24,15 @@ const Events = () => {
 	}
 
 	return (
-		<>
-			<p>Calendar</p>
+		<div className='pt-5 min-h-screen bg-gray-500'>
 			<Calendar
 				events={events}
 				onSelectEvent={onSelectEvent}
 				views={['month', 'agenda']}
 				localizer={localizer}
-				style={{ height: 350 }}
+				style={{ height: 350 , background: '#94a3b8' ,margin:'8px'}}
 			/>
-		</>
+		</div>
 	)
 }
 

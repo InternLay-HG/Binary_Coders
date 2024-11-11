@@ -1,61 +1,57 @@
 import { useEffect, useState } from 'react'
-import apiUrl from '../../../config'
 
 const Updates = () => {
-	const [updates, setUpdates] = useState([])
+  const [updates, setUpdates] = useState([])
 
-	const fetchUpdates = async () => {
-		const response = await fetch(`${apiUrl}/getUpdates`)
+  const fetchUpdates = async () => {
+    const response = await fetch('http://localhost:5000/getUpdates')
 		const data = await response.json()
 		setUpdates([...data])
-	}
+  }
 
-	useEffect(() => {
-		fetchUpdates()
-	}, [])
+  useEffect(() => {
+    fetchUpdates()
+  }, [])
 
-	const addUpdate = async (e) => {
-		e.preventDefault()
-		const { title, content } = e.target.elements
+  const addUpdate = async (e) => {
+    e.preventDefault()
+    const newUpdate = e.target.elements.newUpdate.value
 
-		console.log(title.value, content.value)
+    await fetch('http://localhost:5000/addUpdate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: newUpdate,
+    })
 
-		await fetch(`${apiUrl}/addUpdate`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				title: title.value,
-				content: content.value,
-			}),
-		})
+    fetchUpdates()
+  }
 
-		fetchUpdates()
-	}
+  return (
+    <div className="bg-gray-500 min-h-screen flex flex-col">
+      <form className="m-3 flex" onSubmit={addUpdate}>
+        <label className="flex-grow">
+          <textarea
+            className="bg-gray-400 block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300"
+            
+            id="newUpdate"
+            placeholder="Add an update..."
+          />
+        </label>
+        <button className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ml-3 px-5 py-2.5 ">
+          Go
+        </button>
+      </form>
 
-	return (
-		<>
-			<form onSubmit={addUpdate}>
-				<input type='text' id='title' placeholder='post title' />
-				<br />
-				<textarea id='content' placeholder='Add an update...' />
-				<button>Go</button>
-			</form>
-
-			<h1>All updates:</h1>
-			<br />
-
-			{updates?.map((item, i) => (
-				<div key={i}>
-					<p>
-						{item.title}: {new Date(item.date).toLocaleDateString('en-CA')}
-					</p>
-					{item.content}
-					<br />
-					<br />
-				</div>
-			))}
-		</>
-	)
+      {updates?.map((item, i) => (
+        <div className='m-3 flex flex-col' key={i}>
+		<p className='text-white'>{new Date(item.date).toLocaleDateString('en-CA')}</p>
+        <div className='text-center bg-gray-400  block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-black'>
+          {item.content}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default Updates
