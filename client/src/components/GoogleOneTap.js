@@ -11,6 +11,7 @@ function GoogleOneTap({ setIsLoggedIn }) {
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify({ credential: response.credential }),
 						credentials: 'include',
+						redirect: 'follow',
 					})
 					setIsLoggedIn(true)
 				}}
