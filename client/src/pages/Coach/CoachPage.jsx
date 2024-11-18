@@ -4,8 +4,8 @@ import { Link, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import CoachBudgets from './CoachBudgets'
 import CoachEvents from './CoachEvents'
 import CoachMembers from './CoachMembers'
-import CoachProfile from './CoachProfile'
 import CoachUpdates from './CoachUpdates'
+import CoachProfile from './CoachProfile'
 const CoachPage = () => {
 	useEffect(() => {
 		const userMenuButton = document.querySelector('[data-dropdown-toggle="dropdown-user"]')
@@ -156,11 +156,12 @@ const CoachPage = () => {
 					{/* Nested route*/}
 					<Routes>
 						<Route path='/' element={<Navigate replace to='profile' />} />
-						<Route path='profile' element={<CoachProfile />} />
+						{/* <Route path='profile' element={<CoachProfile />} /> */}
 						<Route path='updates/*' element={<CoachUpdates />} />
 						<Route path='members' element={<CoachMembers />} />
-						<Route path='events' element={<CoachEvents />} />
+						<Route path='events' element={<CoachEvents />} /> 
 						<Route path='budgets' element={<CoachBudgets />} />
+						<Route path='profile' element={<CoachProfile />} />
 					</Routes>
 					{/* Outlet for rendering nested components if needed */}
 					<Outlet />
