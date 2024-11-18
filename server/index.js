@@ -63,7 +63,7 @@ app.get('/getcoach', authenticateJWT, async (req, res) => {
 
 	const coach = await coaches.findById(req.id)
 	const team = await teams.findById(coach.teamId)
-	res.json({ ...coach._doc, ...team._doc })
+	res.json({ ...coach._doc, team: team._doc })
 })
 
 app.listen(port, () => {
