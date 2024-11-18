@@ -37,6 +37,8 @@ const teams = mongoose.model(
 		coach: String,
 		captain: String,
 		players: [String],
+		budget: Number,
+		expense: Number,
 	})
 )
 
@@ -73,4 +75,13 @@ const budgets = mongoose.model(
 	})
 )
 
-export { events, teams, updates, users, budgets }
+const coaches = mongoose.model(
+	'coaches',
+	new mongoose.Schema({
+		_id: { type: mongoose.Schema.Types.String, ref: 'users' },
+		name: String,
+		teamId: { type: mongoose.Schema.Types.ObjectId, ref: 'teams' },
+	})
+)
+
+export { budgets, events, teams, updates, users, coaches }

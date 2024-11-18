@@ -3,7 +3,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 import authRoutes, { authenticateJWT } from './routes/auth.js'
-import { budgets, events, teams, updates, users } from './utils/mongo.js'
+import { budgets, coaches, events, teams, updates, users } from './utils/mongo.js'
 
 const app = express()
 app.use(cookieParser())
@@ -58,6 +58,14 @@ app.get('/getbudgets', async (req, res) => {
 	res.json(allBudgets)
 })
 
+app.get('/getcoach', authenticateJWT, async (req, res) => {
+	console.log(req.id)
+
+	const coach = await coaches.findById(req.id)
+	const team = await teams.findById(coach.teamId)
+	res.json({ ...coach._doc, ...team._doc })
+})
+
 app.listen(port, () => {
 	console.log(`Server running on http://localhost:${port}`)
 })
@@ -66,5 +74,3 @@ function rename(obj, old_key, new_key) {
 	obj[new_key] = obj[old_key]
 	delete obj[old_key]
 }
-
-//
